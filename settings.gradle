@@ -1,0 +1,3 @@
+include ':percentageview'
+include ':app'
+rootProject.name = "MyPercentageview"
