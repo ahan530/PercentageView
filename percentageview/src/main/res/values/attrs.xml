@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--进度比自定义控件-->
+    <declare-styleable name="PercentageView">
+        <!-- 左邊进度-->
+        <attr name="LeftProgress" format="float"/>
+        <!--左边进度颜色-->
+        <attr name="LeftProgressColor" format="color"/>
+        <!--右边进度颜色-->
+        <attr name="RightProgressColor" format="color"/>
+        <!--右边进度-->
+        <attr name="RightProgress" format="float"/>
+        <!--百分比字体大小-->
+        <attr name="android:textSize" />
+        <!--百分比字体左右边距-->
+        <attr name="textPadding" format="dimension"/>
+        <!--百分比左邊字体颜色-->
+        <attr name="textLeftColor" format="color" />
+        <!--百分比右邊字体颜色-->
+        <attr name="textRightColor" format="color" />
+        <!--显示条高度-->
+        <attr name="ProgressMinHeight" format="dimension"/>
+        <!--进度单位，默认%-->
+        <attr name="ProgressUnit" format="string"/>
+        <!--进度条左右圆角弧度-->
+        <attr name="ProgressRadius" format="dimension"/>
+        <!--显示条宽度-->
+        <attr name="ProgressMinWidth" format="dimension"/>
+        <!--是否显示左右进度文字-->
+        <attr name="ShowProgressText" format="boolean"/>
+        <!--显示圆形半径-->
+        <attr name="Radius" format="dimension"/>
+        <!--显示圆形背景色-->
+        <attr name="CricularBgColor" format="color"/>
+        <!--中间字体大小-->
+        <attr name="CenterTextSize" format="dimension"/>
+        <!--左边多-->
+        <attr name="CenterTextMany" format="string"/>
+        <!--左边少-->
+        <attr name="CenterTextFew" format="string"/>
+        <!--中间显示文字-->
+        <attr name="CenterText" format="string"/>
+        <!--中间字体颜色左值大-->
+        <attr name="CenterTextColorMany" format="color"/>
+        <!--中间字体颜色左值小-->
+        <attr name="CenterTextColorFew" format="color"/>
+        <!--中间字体颜色-左右值相等-->
+        <attr name="CenterTextColor" format="color"/>
+        <!--忽略值变化的中间字体颜色-->
+        <attr name="CenterTextColorAlways" format="color"/>
+        <!--中间圆圈颜色背景-->
+        <attr name="CenterBg" format="color"/>
+        <!--中间分割线倾斜度-->
+        <attr name="CenterLineTilt" format="float"/>
+        <!--中间分割线宽度-->
+        <attr name="CenterLineSize" format="dimension"/>
+        <!--中间分割线颜色-->
+        <attr name="CenterLineColor" format="color"/>
+    </declare-styleable>
+
+</resources>
