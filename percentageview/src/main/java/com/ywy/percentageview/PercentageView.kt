@@ -18,8 +18,9 @@ class PercentageView : android.view.View {
     private var mType = Type.NORMAL
 
     enum class Type {
-        PURE, //纯净模式下没有分割线,但是可以绘制左右进度文字
-        NORMAL //默认模式
+        PURE, //模式- 纯净模式下没有分割线,但是可以绘制左右进度文字
+        NORMAL, //模式二 默认模式
+        DIVISION //模式三 分割模式，对分割首尾没有限制但不能设置倾斜度
     }
 
     companion object {
@@ -108,7 +109,7 @@ class PercentageView : android.view.View {
     //中间文字的画笔
     var mPaintCircularText: Paint? = null
 
-    //中间分隔符的倾斜度-90~90 默认60f
+    //中间分隔符的倾斜度-90~90 默认60f,对于模式三来说倾斜度只改变方向
     var mTilt = 60f
 
     //中间分隔线的宽度 默认为10
@@ -391,6 +392,14 @@ class PercentageView : android.view.View {
                     drawProgressText(canvas)
                 }
             }
+            //模式三 临界值不完善
+            Type.DIVISION -> {
+                drawDivision(canvas)
+                if (mShowProgressText) {
+                    //绘制左右两边边文字
+                    drawProgressText(canvas)
+                }
+            }
             //默认模式
             else -> {
                 /**
@@ -439,15 +448,17 @@ class PercentageView : android.view.View {
                 }
             }
 
+
         }
     }
+
 
     //---------------------------------------绘制步骤----------------------------------------
 
     //0:画纯净bar
     private fun drawPureBar(canvas: Canvas?) {
         var pathOne: Path? = getFirstPath()
-        var paintOne: Paint? = getProgressPaint(mRightColor)
+        var paintOne: Paint? = getColorPaint(mRightColor)
         if (paintOne != null && pathOne != null) {
             canvas?.drawPath(pathOne, paintOne)
         }
@@ -463,9 +474,70 @@ class PercentageView : android.view.View {
             mProgressRadius,
             mProgressRadius
         )
-        var paintTwo: Paint? = getProgressPaint(mLeftColor)
+        var paintTwo: Paint? = getColorPaint(mLeftColor)
         if (paintTwo != null && pathTwo != null) {
             canvas?.drawPath(pathTwo, paintTwo)
+        }
+    }
+
+    //0.1:分割符bar
+    private fun drawDivision(canvas: Canvas?) {
+       mPathChart?:return
+
+         getNewPath(
+            mPathChart,
+            0f,
+            0f,
+            width * (mLeftValue / mTotailValue),
+            height.toFloat(),
+            mProgressRadius,
+            mProgressRadius,
+            0f,
+            0f
+        )?.let {
+             getColorPaint(mLeftColor)?.let {it1->
+                canvas?.drawPath(it,it1)
+            }
+        }
+
+         getNewPath(
+             mPathChart,
+            width * (mLeftValue /mTotailValue),
+            0f,
+            width.toFloat(),
+            height.toFloat(),
+            0f,
+            0f,
+            mProgressRadius,
+            mProgressRadius
+        )?.let {
+             getColorPaint(mRightColor)?.let {it1->
+                 canvas?.drawPath(it,it1)
+             }
+         }
+
+        val currentValue = width * (mLeftValue / mTotailValue)
+        var cutlinePath= if (mTilt > 0) {
+             getRagularPath(
+                mPathChart!!,
+                currentValue, 0f,
+                currentValue + mLineSize, 0f,
+                currentValue, height.toFloat(),
+                currentValue - mLineSize, height.toFloat()
+            )
+        }else{
+            getRagularPath(
+                mPathChart!!,
+                currentValue-mLineSize, 0f,
+                currentValue , 0f,
+                currentValue+mLineSize, height.toFloat(),
+                currentValue , height.toFloat()
+            )
+        }
+        cutlinePath?.let {
+            getColorPaint(mLineColor)?.let {it1->
+                canvas?.drawPath(it,it1)
+            }
         }
     }
 
@@ -476,7 +548,7 @@ class PercentageView : android.view.View {
 
         if (pathCutLine != null) {
             //获取分割线画笔
-            var paintCutLine = getCutLinePaint()
+            var paintCutLine = getColorPaint(mLineColor)
             if (paintCutLine != null) {
                 canvas?.drawPath(pathCutLine, paintCutLine)
             }
@@ -485,12 +557,14 @@ class PercentageView : android.view.View {
 
     //2：绘制无圆角左边进度
     private fun drawRectLeft(canvas: Canvas?) {
-        //有无圆角
-//        var pathLeft = getRadiusLeftPath(mProgressRadius)
-        var pathLeft = getRectLeftPath()
+        var pathLeft = if (mProgressRadius<=0){
+            getRectLeftPath()
+        }else{
+            getRadiusLeftPath(mProgressRadius)
+        }
 
         //获取进度画笔 画左边
-        val progressLeftPaint = getProgressPaint(mLeftColor)
+        val progressLeftPaint = getColorPaint(mLeftColor)
 
         //开始绘制
         if (progressLeftPaint != null && pathLeft != null) {
@@ -503,7 +577,7 @@ class PercentageView : android.view.View {
         //右边图形路径
         var pathRight = getRadiusRightPath(mProgressRadius)
         //右边画笔
-        val progressRightPaint = getProgressPaint(mRightColor)
+        val progressRightPaint = getColorPaint(mRightColor)
 
         if (pathRight != null && progressRightPaint != null) {
             canvas?.drawPath(pathRight, progressRightPaint)
@@ -515,7 +589,7 @@ class PercentageView : android.view.View {
         Log.i(TAG, "onDraw: 有圆角，没有分割线")
         //获取第一层path
         var pathOne: Path? = getFirstPath()
-        var paintOne: Paint? = getProgressPaint(mRightColor)
+        var paintOne: Paint? = getColorPaint(mRightColor)
         //获取第二层path
         if (paintOne != null && pathOne != null) {
             //现将第一层画出
@@ -649,9 +723,6 @@ class PercentageView : android.view.View {
     }
 
 
-
-
-
     //圆角无分隔符情况下的第二层的路径
     private fun getSecoundPath(): Path? {
         var mPathChartadd = Path()
@@ -780,55 +851,29 @@ class PercentageView : android.view.View {
         //确定有无分隔线
         if (haveCutLine()) {
             resetLeftValue()
+            if (mPathChart == null) return null
             mPathChart?.reset()
-            if (mTilt > 0) {
-
-                mPathChart?.moveTo(
-                    width * (mLeftValue / mTotailValue) - mLineSize / 2,
-                    0f
-                ) //第1个点
-                mPathChart?.lineTo(
-                    width * (mLeftValue / mTotailValue) + mLineSize / 2,
-                    0f
-                ) //第2个点
-                mPathChart?.lineTo(
-                    width * (mLeftValue / mTotailValue) - mTilt + mLineSize / 2,
-                    height.toFloat()
-                )//第3个点
-                mPathChart?.lineTo(
-                    width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2,
-                    height.toFloat()
-                )//第4个点
-
+            return if (mTilt > 0) {
+                getRagularPath(
+                    mPathChart!!,
+                    width * (mLeftValue / mTotailValue) - mLineSize / 2, 0f,
+                    width * (mLeftValue / mTotailValue) + mLineSize / 2, 0f,
+                    width * (mLeftValue / mTotailValue) - mTilt + mLineSize / 2, height.toFloat(),
+                    width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2, height.toFloat()
+                )
             } else {
-                mPathChart?.moveTo(
-                    width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt,
-                    0f
-                ) //第1个点
-                mPathChart?.lineTo(
-                    width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt,
-                    0f
-                ) //第2个点
-                mPathChart?.lineTo(
-                    width * (mLeftValue / mTotailValue) + mLineSize / 2,
-                    height.toFloat()
-                )//第3个点
-                mPathChart?.lineTo(
-                    width * (mLeftValue / mTotailValue) - mLineSize / 2,
-                    height.toFloat()
-                )//第4个点
+                getRagularPath(
+                    mPathChart!!,
+                    width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt, 0f,
+                    width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt, 0f,
+                    width * (mLeftValue / mTotailValue) + mLineSize / 2, height.toFloat(),
+                    width * (mLeftValue / mTotailValue) - mLineSize / 2, height.toFloat()
+                )
             }
-            mPathChart?.close()
-            return mPathChart
         }
-        //无
         return null
     }
 
-    //是否有分割线
-    private fun haveCutLine(): Boolean {
-        return mLineSize > 0f
-    }
 
     //重置进度值,使分隔线宽度>0时可以显示完全
     private var mLeftTrueString = ""
@@ -875,23 +920,9 @@ class PercentageView : android.view.View {
 
     }
 
-    //获取分割线
-    private fun getCutLinePaint(): Paint? {
-        mPaint?.reset()
-        mPaint?.style = Paint.Style.FILL //画笔样式
-        mPaint?.isAntiAlias = true //抗锯齿
-        mPaint?.color = mLineColor //画笔颜色
-        return mPaint
-    }
 
-    //获取进度画笔
-    private fun getProgressPaint(mColor: Int): Paint? {
-        mPaint?.reset()
-        mPaint?.style = Paint.Style.FILL //画笔样式
-        mPaint?.isAntiAlias = true //抗锯齿
-        mPaint?.color = mColor //画笔颜色
-        return mPaint
-    }
+
+
 
     //获取带指定圆角的path对象
     private fun getRadiusLeftPath(mProgressRadius: Float): Path? {
@@ -1071,6 +1102,36 @@ class PercentageView : android.view.View {
 
     //-----------------------------------------------内部通用方法-----------------------------------
 
+    //获取指定颜色的填充画笔
+    private fun getColorPaint(mColor: Int): Paint? {
+        mPaint?.reset()
+        mPaint?.style = Paint.Style.FILL //画笔样式
+        mPaint?.isAntiAlias = true //抗锯齿
+        mPaint?.color = mColor //画笔颜色
+        return mPaint
+    }
+
+    //获取四个点的封闭路径
+    private fun getRagularPath(
+        path: Path, onePointx: Float, onePointy: Float,
+        twoPointx: Float, twoPointy: Float,
+        threePointx: Float, threePointy: Float,
+        fourPointx: Float, fourPointy: Float
+    ): Path {
+        path?.reset()
+        path?.moveTo(onePointx, onePointy) //第1个点
+        path?.lineTo(twoPointx, twoPointy) //第2个点
+        path?.lineTo(threePointx, threePointy)//第3个点
+        path?.lineTo(fourPointx, fourPointy)//第4个点
+        path?.close()
+        return path
+    }
+
+    //是否有分割线
+    private fun haveCutLine(): Boolean {
+        return mLineSize > 0f
+    }
+
     //建一个带圆角的起始位置为0,0 终点位置不定的Path路径
     private fun getNewPath(
         mPathOld: Path?,
@@ -1096,7 +1157,7 @@ class PercentageView : android.view.View {
         )
         return if (mPathOld == null) {
             var mPath = Path()
-            mPath?.addRoundRect(rectF, floatArrayOf, Path.Direction.CW)
+            mPath.addRoundRect(rectF, floatArrayOf, Path.Direction.CW)
             mPath
         } else {
             mPathOld.reset()

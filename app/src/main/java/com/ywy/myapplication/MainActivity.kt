@@ -59,7 +59,10 @@ class MainActivity : AppCompatActivity() {
         mPercentageView72.setData(36f,100f)
         mPercentageView73.setData(76f,100f)
 
-
-
+        //8:无限制带分割线
+        mPercentageView8.setType(PercentageView.Type.DIVISION)
+        mPercentageView8.setData(51f,100f)
+        mPercentageView81.setType(PercentageView.Type.DIVISION)
+        mPercentageView81.setData(2f,100f)
     }
 }

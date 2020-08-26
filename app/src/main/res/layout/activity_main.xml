@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingTop="@dimen/dp_10"
+    android:background="@color/color_white"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -244,17 +245,35 @@
             app:ShowProgressText="true"
             app:textPadding="8dp" />
 
-        <!--    <com.ywy.percentageview.PercentageView-->
-        <!--        android:id="@+id/mPercentageView100"-->
-        <!--        android:layout_width="@dimen/dp_200"-->
-        <!--        android:layout_height="@dimen/dp_40"-->
-        <!--        app:LeftProgress="55"-->
-        <!--        app:RightProgress="45"-->
-        <!--        app:ProgressRadius="0dp"-->
-        <!--        app:CenterLineColor="#2c9e67"-->
-        <!--        app:CenterLineSize="10dp"-->
-        <!--        app:CenterLineTilt="60"-->
-        <!--        android:layout_marginTop="@dimen/dp_10"/>-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="8：无限制带分割线无进度值" />
+            <com.ywy.percentageview.PercentageView
+                android:id="@+id/mPercentageView8"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_20"
+                app:LeftProgress="55"
+                app:RightProgress="45"
+                app:ProgressRadius="10dp"
+                app:CenterLineColor="#2c9e67"
+                app:CenterLineSize="10dp"
+                app:RightProgressColor="@color/color_333333"
+                app:CenterLineTilt="60"
+                android:layout_marginTop="@dimen/dp_10"/>
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView81"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            app:LeftProgress="55"
+            app:RightProgress="45"
+            app:ProgressRadius="10dp"
+            app:CenterLineColor="#2c9e67"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="60"
+            android:layout_marginTop="@dimen/dp_10"/>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
