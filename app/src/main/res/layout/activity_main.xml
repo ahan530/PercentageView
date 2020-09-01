@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_white"
     android:orientation="vertical"
     android:paddingTop="@dimen/dp_10"
-    android:background="@color/color_white"
+    android:scrollbars="vertical"
     tools:context=".MainActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,10 +17,17 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView100"
+            android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
-            android:text="0：纯净模式" />
+            android:layout_marginTop="@dimen/dp_10" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0：纯净模式(没有分割线)"
+            android:textColor="@color/color_333333" />
 
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView0"
@@ -27,29 +36,60 @@
             android:layout_marginTop="@dimen/dp_10"
             app:ProgressRadius="10dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView01"
+            android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
-            android:text="1：直角带白色切割线" />
+            android:layout_marginTop="@dimen/dp_10"
+            app:ProgressRadius="10dp"
+            app:ShowProgressText="false" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView02"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            app:ProgressRadius="10dp"
+            app:ShowProgressText="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="1：直角带白色切割线"
+            android:textColor="@color/color_333333" />
 
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView1"
             android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
+            app:CenterLineSize="4dp"
             app:CenterLineTilt="-50"
             app:ProgressRadius="0dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView11"
+            android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
-            android:text="2：圆角不带切割线" />
+            app:CenterLineSize="3dp"
+            app:CenterLineTilt="50"
+            app:ProgressRadius="0dp"
+            app:Radius="0dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="2：圆角不带切割线"
+            android:textColor="@color/color_333333" />
 
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView2"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
             app:CenterLineSize="0dp"
             app:CenterLineTilt="30"
             app:ProgressRadius="15dp" />
@@ -58,33 +98,26 @@
             android:id="@+id/mPercentageView21"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_2"
+            android:layout_marginTop="@dimen/dp_10"
             app:CenterLineSize="0dp"
             app:CenterLineTilt="-30"
             app:ProgressRadius="15dp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
-            android:text="3：圆角带切割线无文字(带左右极限值)" />
-
-        <com.ywy.percentageview.PercentageView
-            android:id="@+id/mPercentageView32"
-            android:layout_width="@dimen/dp_200"
-            android:layout_height="@dimen/dp_15"
-            app:CenterLineSize="10dp"
-            app:CenterLineTilt="30"
-            app:ProgressRadius="10dp"
-            app:ShowProgressText="false" />
+            android:text="3：圆角带切割线无文字(带左右极限值)"
+            android:textColor="@color/color_333333" />
 
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView3"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginTop="@dimen/dp_10"
             app:CenterLineSize="10dp"
-            app:CenterLineTilt="-30"
+            app:CenterLineTilt="30"
+            app:HaveLimiValue="true"
             app:ProgressRadius="10dp"
             app:ShowProgressText="false" />
 
@@ -92,18 +125,31 @@
             android:id="@+id/mPercentageView31"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_15"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="@dimen/dp_10"
             app:CenterLineSize="10dp"
             app:CenterLineTilt="-30"
+            app:HaveLimiValue="true"
+            app:ProgressRadius="10dp"
+            app:ShowProgressText="false" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView32"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_10"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="-30"
+            app:HaveLimiValue="true"
             app:ProgressRadius="10dp"
             app:ShowProgressText="false" />
 
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
-            android:text="4：圆角带切割线有文字" />
+            android:text="4：圆角带切割线有文字"
+            android:textColor="@color/color_333333" />
 
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView4"
@@ -112,13 +158,37 @@
             app:CenterLineSize="10dp"
             app:CenterLineTilt="30"
             app:ProgressRadius="10dp"
+            android:layout_marginTop="@dimen/dp_10"
+            app:ShowProgressText="true" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView41"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_15"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="30"
+            app:ProgressRadius="10dp"
+            android:layout_marginTop="@dimen/dp_10"
+            app:ShowProgressText="true" />
+
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView42"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_15"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="30"
+            app:ProgressRadius="10dp"
+            app:HaveLimiValue="true"
+            android:layout_marginTop="@dimen/dp_10"
             app:ShowProgressText="true" />
 
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
+            android:textColor="@color/color_333333"
             android:text="5：直角带切割线有文字，有中间文字" />
 
         <com.ywy.percentageview.PercentageView
@@ -133,6 +203,57 @@
             app:CenterTextSize="@dimen/sp_15"
             app:ProgressRadius="0dp"
             app:Radius="@dimen/dp_16" />
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView51"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/color_white"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="30"
+            app:CenterTextSize="@dimen/sp_15"
+            app:ProgressRadius="0dp"
+            app:Radius="@dimen/dp_16" />
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView52"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/color_white"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="30"
+            app:CenterTextSize="@dimen/sp_15"
+            app:ProgressRadius="0dp"
+            app:Radius="@dimen/dp_16" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView53"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/color_white"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="30"
+            app:CenterTextSize="@dimen/sp_15"
+            app:ProgressRadius="0dp"
+            app:Radius="@dimen/dp_16" />
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView54"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/color_white"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="30"
+            app:CenterTextSize="@dimen/sp_15"
+            app:ProgressRadius="0dp"
+            app:Radius="@dimen/dp_16" />
+
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -251,29 +372,31 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
             android:text="8：无限制带分割线无进度值" />
-            <com.ywy.percentageview.PercentageView
-                android:id="@+id/mPercentageView8"
-                android:layout_width="@dimen/dp_200"
-                android:layout_height="@dimen/dp_20"
-                app:LeftProgress="55"
-                app:RightProgress="45"
-                app:ProgressRadius="10dp"
-                app:CenterLineColor="#2c9e67"
-                app:CenterLineSize="10dp"
-                app:RightProgressColor="@color/color_333333"
-                app:CenterLineTilt="60"
-                android:layout_marginTop="@dimen/dp_10"/>
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView8"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            app:CenterLineColor="#2c9e67"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="60"
+            app:LeftProgress="55"
+            app:ProgressRadius="10dp"
+            app:RightProgress="45"
+            app:RightProgressColor="@color/color_333333" />
+
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView81"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_20"
-            app:LeftProgress="55"
-            app:RightProgress="45"
-            app:ProgressRadius="10dp"
-            app:CenterLineColor="#2c9e67"
-            app:CenterLineSize="10dp"
+            android:layout_marginTop="@dimen/dp_10"
+            app:CenterLineColor="#ffffff"
+            app:CenterLineSize="2dp"
             app:CenterLineTilt="60"
-            android:layout_marginTop="@dimen/dp_10"/>
+            app:LeftProgress="55"
+            app:ProgressRadius="10dp"
+            app:RightProgress="45" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

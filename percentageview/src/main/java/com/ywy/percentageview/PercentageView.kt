@@ -20,7 +20,7 @@ class PercentageView : android.view.View {
     enum class Type {
         PURE, //模式- 纯净模式下没有分割线,但是可以绘制左右进度文字
         NORMAL, //模式二 默认模式
-        DIVISION //模式三 分割模式，对分割首尾没有限制但不能设置倾斜度
+       // DIVISION //模式三 分割模式，对分割首尾没有限制但不能设置倾斜度
     }
 
     companion object {
@@ -112,11 +112,14 @@ class PercentageView : android.view.View {
     //中间分隔符的倾斜度-90~90 默认60f,对于模式三来说倾斜度只改变方向
     var mTilt = 60f
 
-    //中间分隔线的宽度 默认为10
-    var mLineSize = 10f
+    //中间分隔线的宽度 默认为0
+    var mLineSize = 0f
 
     //中间分隔线颜色
     var mLineColor = Color.parseColor("#ffffff")
+
+    //是否有极限值 没有
+    private var mHaveLimitValue = false
 
     //图形画笔
     private var mPaint: Paint? = null
@@ -185,6 +188,13 @@ class PercentageView : android.view.View {
             if (lineColor != null) {
                 mLineColor = lineColor
             }
+
+              val haveLimiValue = obt?.getBoolean(R.styleable.PercentageView_HaveLimiValue, mHaveLimitValue)
+            if (haveLimiValue != null) {
+                mHaveLimitValue = haveLimiValue
+            }
+
+
             val leftColor = obt?.getColor(R.styleable.PercentageView_textLeftColor, mTextLeftColor)
             if (leftColor != null) {
                 mTextLeftColor = leftColor
@@ -393,22 +403,23 @@ class PercentageView : android.view.View {
                 }
             }
             //模式三 临界值不完善
-            Type.DIVISION -> {
-                drawDivision(canvas)
-                if (mShowProgressText) {
-                    //绘制左右两边边文字
-                    drawProgressText(canvas)
-                }
-            }
+//            Type.DIVISION -> {
+//                drawDivision(canvas)
+//                if (mShowProgressText) {
+//                    //绘制左右两边边文字
+//                    drawProgressText(canvas)
+//                }
+//            }
             //默认模式
             else -> {
-                /**
-                 * step1:绘制中间分隔线
-                 */
-                drawCutLine(canvas)
 
-                //有分割线 或 者无圆角
-                if (haveCutLine() || mProgressRadius <= 0) {
+
+                //无圆角
+                if ( mProgressRadius <= 0 || mHaveLimitValue ) {
+                    /**
+                     * step1:绘制中间分隔线
+                     */
+                    drawCutLine(canvas)
                     /**
                      * step2:绘制显示进度-左边
                      */
@@ -418,10 +429,7 @@ class PercentageView : android.view.View {
                      * step3:绘制显示进度-右边
                      */
                     drawRectRight(canvas)
-                }
-
-                //无分隔线的圆角
-                else {
+                } else { //有圆角
                     /**
                      * step 2-3:绘制无分割线圆角
                      */
@@ -586,7 +594,7 @@ class PercentageView : android.view.View {
 
     //2-3：绘制圆角无分割线进度条
     private fun drawCornerProgress(canvas: Canvas?) {
-        Log.i(TAG, "onDraw: 有圆角，没有分割线")
+        Log.i(TAG, "onDraw: 有圆角")
         //获取第一层path
         var pathOne: Path? = getFirstPath()
         var paintOne: Paint? = getColorPaint(mRightColor)
@@ -615,6 +623,25 @@ class PercentageView : android.view.View {
                 while (iterator.next(rect)) {
                     canvas!!.drawRect(rect, paintOne)
                 }
+            }
+
+            //有分割线
+            if (haveCutLine()){
+                val  region4 = Region()
+                 getCutPathByTilt()?.let {
+                     region4.setPath(it,region)
+                    val op2 = region4.op(region2,Region.Op.INTERSECT)
+                     paintOne.color = mLineColor
+
+                     Log.i(TAG, "onDraw: 绘制分割线$op2")
+                     if (op2){
+                         val iterator = RegionIterator(region4)
+                         val rect = Rect()
+                         while (iterator.next(rect)) {
+                             canvas!!.drawRect(rect, paintOne)
+                         }
+                     }
+                 }
             }
         }
     }
@@ -853,26 +880,12 @@ class PercentageView : android.view.View {
             resetLeftValue()
             if (mPathChart == null) return null
             mPathChart?.reset()
-            return if (mTilt > 0) {
-                getRagularPath(
-                    mPathChart!!,
-                    width * (mLeftValue / mTotailValue) - mLineSize / 2, 0f,
-                    width * (mLeftValue / mTotailValue) + mLineSize / 2, 0f,
-                    width * (mLeftValue / mTotailValue) - mTilt + mLineSize / 2, height.toFloat(),
-                    width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2, height.toFloat()
-                )
-            } else {
-                getRagularPath(
-                    mPathChart!!,
-                    width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt, 0f,
-                    width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt, 0f,
-                    width * (mLeftValue / mTotailValue) + mLineSize / 2, height.toFloat(),
-                    width * (mLeftValue / mTotailValue) - mLineSize / 2, height.toFloat()
-                )
-            }
+            return getCutPathByTilt()
         }
         return null
     }
+
+
 
 
     //重置进度值,使分隔线宽度>0时可以显示完全
@@ -1163,6 +1176,27 @@ class PercentageView : android.view.View {
             mPathOld.reset()
             mPathOld?.addRoundRect(rectF, floatArrayOf, Path.Direction.CW)
             mPathOld
+        }
+    }
+
+    //通过倾斜度获取完整的分割线路径
+    private fun getCutPathByTilt(): Path? {
+        return if (mTilt > 0) {
+            getRagularPath(
+                mPathChart!!,
+                width * (mLeftValue / mTotailValue) - mLineSize / 2, 0f,
+                width * (mLeftValue / mTotailValue) + mLineSize / 2, 0f,
+                width * (mLeftValue / mTotailValue) - mTilt + mLineSize / 2, height.toFloat(),
+                width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2, height.toFloat()
+            )
+        } else {
+            getRagularPath(
+                mPathChart!!,
+                width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt, 0f,
+                width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt, 0f,
+                width * (mLeftValue / mTotailValue) + mLineSize / 2, height.toFloat(),
+                width * (mLeftValue / mTotailValue) - mLineSize / 2, height.toFloat()
+            )
         }
     }
 

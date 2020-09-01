@@ -57,6 +57,9 @@
         <attr name="CenterLineSize" format="dimension"/>
         <!--中间分割线颜色-->
         <attr name="CenterLineColor" format="color"/>
+        <!--是否有极限值-->
+        <attr name="HaveLimiValue" format="boolean"/>
+
     </declare-styleable>
 
 </resources>
