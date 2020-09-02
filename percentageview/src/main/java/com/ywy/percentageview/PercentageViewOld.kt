@@ -8,6 +8,7 @@ import com.ywy.percentageview.paint.PaintFactory
 import com.ywy.percentageview.paint.SolidPaint
 import com.ywy.percentageview.path.FilletPath
 import com.ywy.percentageview.path.PathFactory
+
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -16,8 +17,8 @@ import kotlin.math.roundToInt
  * Author:ahan
  * Description: 百分比图形
  **/
-const val TAG = "PercentageView"
-class PercentageView : android.view.View {
+const val TAG2 = "PercentageView2"
+class PercentageViewOld: android.view.View {
 
     private var mType = Type.NORMAL
 
@@ -325,18 +326,18 @@ class PercentageView : android.view.View {
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
         val heightSize = MeasureSpec.getSize(heightMeasureSpec)
 
-        Log.e(TAG, "宽: $widthSize 高：$heightSize")
+        Log.e(TAG2, "宽: $widthSize 高：$heightSize")
 
         when (widthMode) {
             MeasureSpec.EXACTLY -> { //父容器已经为子容器设置了尺寸,子容器应当服从这些边界,不论子容器想要多大的空间.
                 when (heightMode) {
                     MeasureSpec.EXACTLY -> {
                         setMeasuredDimension(widthSize, heightSize)
-                        Log.e(TAG + "宽高一定", "宽: $widthSize 高：$heightSize")
+                        Log.e( "宽高一定", "宽: $widthSize 高：$heightSize")
                     }
                     MeasureSpec.AT_MOST, MeasureSpec.UNSPECIFIED -> {
                         setMeasuredDimension(widthSize, mMinHeight.toInt())
-                        Log.e(TAG + "宽一定,高不定", "宽: $widthSize 高：$mMinHeight")
+                        Log.e("宽一定,高不定", "宽: $widthSize 高：$mMinHeight")
                     }
                 }
             }
@@ -344,12 +345,12 @@ class PercentageView : android.view.View {
                 when (heightMode) {
                     MeasureSpec.EXACTLY -> {
                         setMeasuredDimension(mMinWidth.toInt(), heightSize)
-                        Log.e(TAG + "宽wrap高一定", "宽: $mMinWidth 高：$heightSize")
+                        Log.e("宽wrap高一定", "宽: $mMinWidth 高：$heightSize")
 
                     }
                     MeasureSpec.AT_MOST, MeasureSpec.UNSPECIFIED -> {
                         setMeasuredDimension(mMinWidth.toInt(), mMinHeight.toInt())
-                        Log.e(TAG + "宽高均wrap", "宽: $mMinWidth 高：$mMinHeight")
+                        Log.e("宽高均wrap", "宽: $mMinWidth 高：$mMinHeight")
                     }
                 }
             }
@@ -461,21 +462,30 @@ class PercentageView : android.view.View {
 
     //0:画纯净bar
     private fun drawPureBar(canvas: Canvas?) {
-        var pathOne: Path? = PathFactory.createPath(FilletPath(RectF(0f,0f,width.toFloat(),height.toFloat()),mPathChart,mProgressRadius,mProgressRadius,mProgressRadius,mProgressRadius))
-        var paintOne: Paint? = PaintFactory.createPaint(SolidPaint(mPaint,mRightColor))
 
-        pathOne?.let {
-            paintOne?.let { it2->
-                canvas?.drawPath(it, it2)
-            }
+        var pathOne: Path? = getFirstPath()
+
+
+        var paintOne: Paint? = getColorPaint(mRightColor)
+
+        if (paintOne != null && pathOne != null) {
+            canvas?.drawPath(pathOne, paintOne)
         }
 
-        val pathTwo =  PathFactory.createPath(FilletPath(RectF(0f,0f,width * (mLeftValue / mTotailValue),height.toFloat()),mPathChart,mProgressRadius,mProgressRadius,mProgressRadius,mProgressRadius))
-        paintOne?.color = mLeftColor
-        pathTwo?.let {
-            paintOne?.let {it2->
-                canvas?.drawPath(it, it2)
-            }
+        val pathTwo = getNewPath(
+            null,
+            0f,
+            0f,
+            width * (mLeftValue / mTotailValue),
+            height.toFloat(),
+            mProgressRadius,
+            mProgressRadius,
+            mProgressRadius,
+            mProgressRadius
+        )
+        var paintTwo: Paint? = getColorPaint(mLeftColor)
+        if (paintTwo != null && pathTwo != null) {
+            canvas?.drawPath(pathTwo, paintTwo)
         }
     }
 
@@ -585,7 +595,7 @@ class PercentageView : android.view.View {
 
     //2-3：绘制圆角无分割线进度条
     private fun drawCornerProgress(canvas: Canvas?) {
-        Log.i(TAG, "onDraw: 有圆角")
+        Log.i(TAG2, "onDraw: 有圆角")
         //获取第一层path
         var pathOne: Path? = getFirstPath()
         var paintOne: Paint? = getColorPaint(mRightColor)
@@ -624,7 +634,7 @@ class PercentageView : android.view.View {
                     val op2 = region4.op(region2,Region.Op.INTERSECT)
                      paintOne.color = mLineColor
 
-                     Log.i(TAG, "onDraw: 绘制分割线$op2")
+                     Log.i(TAG2, "onDraw: 绘制分割线$op2")
                      if (op2){
                          val iterator = RegionIterator(region4)
                          val rect = Rect()
@@ -653,7 +663,7 @@ class PercentageView : android.view.View {
                     mTextPaint!!.fontMetrics   //文字高度相关的信息都存在FontMetrics对象中
                 val y: Float =
                     (height) / 2 + (abs(fontMetrics!!.ascent) - fontMetrics!!.descent) / 2 //|ascent|=descent+ 2 * ( 2号线和3号线之间的距离 )
-                Log.i(TAG, "左边onDraw:绘制内容： $valueString")
+                Log.i(TAG2, "左边onDraw:绘制内容： $valueString")
                 //绘制
                 canvas?.drawText(
                     valueString,
@@ -903,8 +913,8 @@ class PercentageView : android.view.View {
                     mLeftTrueString = ""
                     showRightText = true
                 }
-                Log.i(TAG, "控件宽度：$width 最小宽度：$minProgressValue 当前总值：$mTotailValue")
-                Log.i(TAG, "resetLeftValue: 重置value值2：$mLeftValue")
+                Log.i(TAG2, "控件宽度：$width 最小宽度：$minProgressValue 当前总值：$mTotailValue")
+                Log.i(TAG2, "resetLeftValue: 重置value值2：$mLeftValue")
 
             } else {
                 showRightText = true
@@ -915,7 +925,7 @@ class PercentageView : android.view.View {
                 mLeftValue = (minProgressValue / width) * mTotailValue
                 mRightValue = mTotailValue - mLeftValue
                 showLeftText = false
-                Log.i(TAG, "resetLeftValue: 重置value值1：$mLeftValue")
+                Log.i(TAG2, "resetLeftValue: 重置value值1：$mLeftValue")
             } else {
                 mRightTrueString = ""
                 showLeftText = true
@@ -1080,7 +1090,7 @@ class PercentageView : android.view.View {
             mRightValue *= 100
         }
 
-        Log.i(TAG, "setData: 左边值：$mLeftValue 右边值：$mRightValue 总值：$mTotailValue")
+        Log.i(TAG2, "setData: 左边值：$mLeftValue 右边值：$mRightValue 总值：$mTotailValue")
     }
 
     //设置数据
