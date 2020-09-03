@@ -9,4 +9,5 @@ import android.graphics.Paint
  */
 open class BasePaint {
     var paint:Paint?=null
+    var color = 0 //画笔颜色
 }

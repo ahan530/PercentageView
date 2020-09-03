@@ -9,7 +9,7 @@ import android.graphics.Paint
  **/
 
 class TextPaint :BasePaint{
-    private var color = 0 //画笔颜色
+
     private var widthPaint = 2f //画笔宽度
     private var textSize = 5f //字体大小
 
@@ -17,6 +17,25 @@ class TextPaint :BasePaint{
         this.paint = paint
         this.color = color
         this.textSize = textSize
+        initPaint()
+    }
+
+    constructor(paint: Paint?, textSize:Float){
+        this.paint = paint
+        this.paint?.reset()
+        this.textSize = textSize
+
+        setDefaultPaint()
+        initPaint()
+    }
+
+    constructor(paint: Paint?, textSize:Float,widthPaint:Float){
+        this.paint = paint
+        this.paint?.reset()
+        this.textSize = textSize
+        this.widthPaint = widthPaint
+
+        setDefaultPaint()
         initPaint()
     }
 
@@ -29,11 +48,28 @@ class TextPaint :BasePaint{
 
     constructor(color:Int,textSize:Float){
         this.paint = Paint()
-
-        setDefaultPaint()
-
         this.color = color
         this.textSize = textSize
+
+        setDefaultPaint()
+        initPaint()
+    }
+
+    constructor(color:Int,textSize:Float,widthPaint:Float){
+        this.paint = Paint()
+        this.color = color
+        this.textSize = textSize
+        this.widthPaint = widthPaint
+
+        setDefaultPaint()
+        initPaint()
+    }
+
+    constructor(color:Int){
+        this.paint = Paint()
+        this.color = color
+
+        setDefaultPaint()
         initPaint()
     }
 
@@ -45,33 +81,13 @@ class TextPaint :BasePaint{
         paint?.textAlign = Paint.Align.LEFT//左对齐
     }
 
-    constructor(color:Int,textSize:Float,widthPaint:Float){
-        this.paint = Paint()
-
-        setDefaultPaint()
-
-        this.color = color
-        this.textSize = textSize
-        this.widthPaint = widthPaint
-        initPaint()
-    }
-
-    constructor(color:Int){
-        this.paint = Paint()
-
-        setDefaultPaint()
-
-        this.color = color
-        initPaint()
-    }
-
     private fun initPaint() {
         paint?.reset()
         paint?.let {
+            it.textSize = textSize
+            it.strokeWidth = widthPaint
             color?.let {it2->
                 it.color = it2
-                it.textSize = textSize
-                it.strokeWidth = widthPaint
             }
         }
     }

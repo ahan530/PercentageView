@@ -9,8 +9,6 @@ import android.graphics.Paint
  */
 class SolidPaint : BasePaint{
 
-    private var color:Int?=null
-
     constructor(paint: Paint?, color:Int){
         this.paint = paint
         this.color = color

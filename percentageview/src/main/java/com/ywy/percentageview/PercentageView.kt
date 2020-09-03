@@ -11,6 +11,8 @@ import com.ywy.percentageview.paths.FilletPath
 import com.ywy.percentageview.paths.PathFactory
 import com.ywy.percentageview.paths.PoinEntity
 import com.ywy.percentageview.paths.RectanglePath
+import java.math.BigDecimal
+import java.text.NumberFormat
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -31,7 +33,6 @@ class PercentageView : android.view.View {
         // DIVISION //模式三 分割模式，对分割首尾没有限制但不能设置倾斜度
     }
 
-
     constructor(context: Context?) : super(context) {
         initData(context, null)
     }
@@ -49,13 +50,13 @@ class PercentageView : android.view.View {
     }
 
     //最小高度 默認40f
-    private var mMinHeight = 40f
+    var mMinHeight = 40f
 
     //最小寬度 默認180f
-    private var mMinWidth = 180f
+    var mMinWidth = 180f
 
     //百分比左邊文字顏色
-    private var mTextLeftColor = Color.parseColor("#ffffff")
+    var mTextLeftColor = Color.parseColor("#ffffff")
 
     //左边坐标进度 布局设置0~100
     var mLeftValue = 0.00f
@@ -103,16 +104,10 @@ class PercentageView : android.view.View {
     var mCenterText = "平"
 
     //中间圆形半径  默认不显示 如果是0则不显示
-    var mRadius: Float = 0f
+    var mRadius = 0f
 
     //中间圆形背景色
     var mCricularBgColor = Color.parseColor("#ffffff")
-
-    //中间背景自定义画笔
-    var mPaintCircularbg: Paint? = null
-
-    //中间文字的画笔
-    var mPaintCircularText: Paint? = null
 
     //中间分隔符的倾斜度-90~90 默认60f,对于模式三来说倾斜度只改变方向
     var mTilt = 60f
@@ -124,7 +119,7 @@ class PercentageView : android.view.View {
     var mLineColor = Color.parseColor("#ffffff")
 
     //是否有极限值 没有
-    private var mHaveLimitValue = false
+    var mHaveLimitValue = false
 
     //图形画笔
     private var mPaint: Paint? = null
@@ -133,7 +128,7 @@ class PercentageView : android.view.View {
     private var mPaintText: Paint? = null
 
     //图形区域
-    private var mRectF: Rect? = null
+    private var mRect = Rect()
 
     //图形路径
     private var mPathChart: Path? = null
@@ -142,15 +137,15 @@ class PercentageView : android.view.View {
     private var mPathChartAdd: Path? = null
 
     //是否显示左边进度值
-    private var showLeftText = true
+    var showLeftText = true
 
     //是否显示右边进度值
-    private var showRightText = true
+    var showRightText = true
 
-    //左边值大-中间字体颜色
+    //左边值大-center字体颜色
     var mCenterTextManyColor = mLeftColor
 
-    //左边值小-中间字体颜色
+    //左边值小-center字体颜色
     var mCenterTextFewColor = mRightColor
 
     //中间字体颜色(不变)
@@ -159,31 +154,37 @@ class PercentageView : android.view.View {
     //左右值持平时字体颜色 默认橙色
     var mCenterTextColor = Color.parseColor("#fd7f3e")
 
+    //重置进度值,使分隔线宽度>0时可以显示完全
+    private var mLeftTrueString = ""
+    private var mRightTrueString = ""
 
     //一：初始化
     private fun initData(context: Context?, attrs: AttributeSet?) {
         if (attrs != null) {
             val obt = context?.obtainStyledAttributes(attrs, R.styleable.PercentageView)
-            val height = obt?.getDimension(R.styleable.PercentageView_ProgressMinHeight, mMinHeight)
-            if (height != null) {
-                mMinHeight = height
+
+            obt?.getDimension(R.styleable.PercentageView_ProgressMinHeight, mMinHeight)?.let {
+                mMinHeight = it
             }
-            val wight = obt?.getDimension(R.styleable.PercentageView_ProgressMinWidth, mMinWidth)
-            if (wight != null) {
-                mMinWidth = wight
+
+            val wight =
+                obt?.getDimension(R.styleable.PercentageView_ProgressMinWidth, mMinWidth)?.let {
+                    mMinWidth = it
+                }
+
+            val tilt = obt?.getFloat(R.styleable.PercentageView_CenterLineTilt, mTilt)?.let {
+                mTilt = it
             }
-            val tilt = obt?.getFloat(R.styleable.PercentageView_CenterLineTilt, 60f)
-            if (tilt != null) {
-                mTilt = tilt
-            }
+
             val lineSize = obt?.getDimension(R.styleable.PercentageView_CenterLineSize, mLineSize)
             if (lineSize != null) {
                 mLineSize = lineSize
             }
-            val progressRadius = obt?.getDimension(R.styleable.PercentageView_ProgressRadius, 10f)
-            if (progressRadius != null) {
-                mProgressRadius = progressRadius
+
+            obt?.getDimension(R.styleable.PercentageView_ProgressRadius, mProgressRadius)?.let {
+                mProgressRadius = it
             }
+
             val progressUnit = obt?.getString(R.styleable.PercentageView_ProgressUnit)
             if (progressUnit != null) {
                 mProgressUnit = progressUnit
@@ -312,8 +313,6 @@ class PercentageView : android.view.View {
         mPaint = Paint()
         //文字画笔
         mPaintText = Paint()
-        //中间图形区域
-        mRectF = Rect()
         //图形绘制路径
         mPathChart = Path()
         //图形绘制补充路径
@@ -369,29 +368,24 @@ class PercentageView : android.view.View {
                 }
             }
         }
-
-        //保存测量结果 无更改则不保存
-        //  setMeasuredDimension(widthSize, heightSize)
     }
 
     //三：绘制
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         when (mType) {
-            //纯净模式
+            //1.纯净模式
             Type.PURE -> {
                 //绘制纯净进度条
                 drawPureBar(canvas)
-                //如果需要绘制文字
+                //需要绘制文字
                 if (mShowProgressText) {
-                    //绘制左右两边边文字
                     drawProgressText(canvas)
                 }
             }
-            //默认模式
+            //2.默认模式
             else -> {
-                //无圆角
-                if (mProgressRadius <= 0 || mHaveLimitValue) {
+                if (mProgressRadius <= 0 || mHaveLimitValue) { //无圆角||有极限值
                     /**
                      * step1:绘制中间分隔线
                      */
@@ -400,19 +394,18 @@ class PercentageView : android.view.View {
                      * step2:绘制显示进度-左边
                      */
                     drawRectLeft(canvas)
-
                     /**
                      * step3:绘制显示进度-右边
                      */
                     drawRectRight(canvas)
                 } else { //有圆角
                     /**
-                     * step 2-3:绘制无分割线圆角
+                     * step 1-3:绘制圆角||无极限值
                      */
                     drawCornerProgress(canvas)
                 }
 
-                //如果需要绘制文字
+                //需要绘制文字
                 if (mShowProgressText) {
                     /**
                      * step4:绘制左右两边边文字
@@ -488,7 +481,7 @@ class PercentageView : android.view.View {
         }
     }
 
-    //2：绘制无圆角左边进度
+    //2：绘制左边进度
     private fun drawRectLeft(canvas: Canvas?) {
         //获取坐标路径
         var pathLeft = if (mProgressRadius <= 0) {
@@ -504,15 +497,13 @@ class PercentageView : android.view.View {
         }
     }
 
-    //3:绘制无圆角右边进度
+    //3:绘制右边进度
     private fun drawRectRight(canvas: Canvas?) {
         //右边图形路径
         var pathRight = getRadiusRightPath(mProgressRadius)
         //右边画笔
-        val progressRightPaint = getColorPaint(mRightColor)
-
-        if (pathRight != null && progressRightPaint != null) {
-            canvas?.drawPath(pathRight, progressRightPaint)
+        PaintFactory.createPaint(SolidPaint(mPaint, mRightColor))?.let {
+            canvas?.drawPath(pathRight, it)
         }
     }
 
@@ -540,11 +531,11 @@ class PercentageView : android.view.View {
             //获取第二层path
             var pathTwo: Path? = getSecoundPath()
             //将路径一和二去交集作为二层涂层
-            mRectF?.top = 0
-            mRectF?.left = 0
-            mRectF?.right = width
-            mRectF?.bottom = height
-            val region = Region(mRectF!!)
+            mRect.top = 0
+            mRect.left = 0
+            mRect.right = width
+            mRect.bottom = height
+            val region = Region(mRect)
             val region2 = Region()
             val region3 = Region()
             region2.setPath(pathOne!!, region)
@@ -561,15 +552,15 @@ class PercentageView : android.view.View {
             }
 
             //有分割线
-            if (haveCutLine()){
-                val  region4 = Region()
+            if (haveCutLine()) {
+                val region4 = Region()
                 getCutPathByTilt()?.let {
-                    region4.setPath(it,region)
-                    val op2 = region4.op(region2,Region.Op.INTERSECT)
+                    region4.setPath(it, region)
+                    val op2 = region4.op(region2, Region.Op.INTERSECT)
                     paintOne.color = mLineColor
 
                     Log.i(TAG2, "onDraw: 绘制分割线$op2")
-                    if (op2){
+                    if (op2) {
                         val iterator = RegionIterator(region4)
                         val rect = Rect()
                         while (iterator.next(rect)) {
@@ -584,56 +575,49 @@ class PercentageView : android.view.View {
     //4：绘制左右文字
     private fun drawProgressText(canvas: Canvas?) {
         //获取进度值画笔
-        var mTextPaint =
-            PaintFactory.createPaint(TextPaint(mPaintText, mTextLeftColor, mValueTextSize))
-
-        //绘制左边进度文字
-        if (showLeftText) {
-            if (mTextPaint != null) {
+        PaintFactory.createPaint(TextPaint(mPaintText, mTextLeftColor, mValueTextSize))?.let {
+            //绘制左边进度文字
+            if (showLeftText) {
                 val valueString = if (mLeftTrueString.isNotEmpty()) {
                     mLeftTrueString + "$mProgressUnit"
                 } else {
                     "$mLeftValue$mProgressUnit"
                 }
-                val fontMetrics =
-                    mTextPaint!!.fontMetrics   //文字高度相关的信息都存在FontMetrics对象中
+                val fontMetrics = it.fontMetrics   //文字高度相关的信息都存在FontMetrics对象中
                 val y: Float =
                     (height) / 2 + (abs(fontMetrics!!.ascent) - fontMetrics!!.descent) / 2 //|ascent|=descent+ 2 * ( 2号线和3号线之间的距离 )
                 Log.i(TAG, "左边onDraw:绘制内容： $valueString")
                 //绘制
                 canvas?.drawText(
-                    valueString, 0f + mPadding, y, mTextPaint!!
+                    valueString, 0f + mPadding, y, it
                 )
             }
-        }
-        //绘制右边文字
-        if (showRightText) {
-            if (mTextPaint != null) {
+
+            //绘制右边文字
+            if (showRightText) {
                 val valueString = if (mRightTrueString.isNotEmpty()) {
                     mRightTrueString + "$mProgressUnit"
                 } else {
                     "$mRightValue$mProgressUnit"
                 }
-                val stringWidth = mTextPaint!!.measureText(valueString)
+                val stringWidth = it.measureText(valueString)
                 val x = (width - stringWidth - mPadding)
-                val fontMetrics = mTextPaint!!.fontMetrics
+                val fontMetrics = it.fontMetrics
                 val y: Float =
                     (height) / 2 + (abs(fontMetrics!!.ascent) - fontMetrics!!.descent) / 2 //|ascent|=descent+ 2 * ( 2号线和3号线之间的距离 )
-                canvas?.drawText(valueString, x, y, mTextPaint!!)
+                canvas?.drawText(valueString, x, y, it)
             }
         }
     }
 
     //5：绘制中间圆形背景
     private fun drawCenterBg(canvas: Canvas?) {
-        //获取圆的画笔
-        var paintCircular = getPaintCricular(mPaintCircularbg)
-        if (paintCircular != null) {
+        PaintFactory.createPaint(SolidPaint(mPaint, mCricularBgColor))?.let {
             canvas?.drawCircle(
                 width * mLeftValue / mTotailValue - abs(mTilt) / 2,
                 height / 2.toFloat(),
                 getRadius(),
-                paintCircular!!
+                it
             )
         }
     }
@@ -641,22 +625,18 @@ class PercentageView : android.view.View {
     //6：绘制中间圆上的字
     private fun drawCenterText(canvas: Canvas?) {
         //画圆中间的字
-        var mPaintCenterText: Paint? = getPaintCenterText(mPaintCircularText)
-
-        if (mPaintCenterText != null) {
-            val stringWidth = mPaintCenterText!!.measureText("$mCenterText")
-            val x =
-                (width * mLeftValue / mTotailValue) - abs(mTilt) / 2 - stringWidth / 2
-            val fontMetrics = mPaint!!.fontMetrics
+        getPaintCenterText()?.let {
+            val stringWidth = it.measureText("$mCenterText")
+            val x = (width * mLeftValue / mTotailValue) - abs(mTilt) / 2 - stringWidth / 2
+            val fontMetrics = it.fontMetrics
             val y: Float =
-                (height) / 2 + (abs(fontMetrics!!.ascent) - fontMetrics!!.descent) / 2 //|ascent|=descent+ 2 * ( 2号线和3号线之间的距离 )
-            canvas?.drawText("$mCenterText", x, y, mPaintCenterText!!) //绘制
+                (height) / 2 + (abs(fontMetrics.ascent) - fontMetrics.descent) / 2 //|ascent|=descent+ 2 * ( 2号线和3号线之间的距离 )
+            canvas?.drawText("$mCenterText", x, y, it)
         }
     }
 
 
     //-------------------------------------------------------------------------------
-
 
     //矩形左边区域
     private fun getRectLeftPath(): Path? {
@@ -683,7 +663,6 @@ class PercentageView : android.view.View {
         }
     }
 
-
     //圆角无分隔符情况下的第二层的路径
     private fun getSecoundPath(): Path? {
         return if (mTilt > 0) {
@@ -705,37 +684,31 @@ class PercentageView : android.view.View {
         }
     }
 
-
     //中间文字画笔
-    private fun getPaintCenterText(mPaintCircularText: Paint?): Paint? {
-        if (mPaintCircularText == null) {
-            mPaint?.reset()
-            mPaint?.style = Paint.Style.FILL //画笔样式
-            mPaint?.isAntiAlias = true //抗锯齿
-            mPaint?.textSize = mCenterTextSize //字体大小
-            mPaint?.typeface = Typeface.DEFAULT_BOLD
+    private fun getPaintCenterText(): Paint? {
+        var paint: Paint? = null
+        PaintFactory.createPaint(TextPaint(mPaint, mCenterTextSize, 10f))?.let {
+            it.typeface = Typeface.DEFAULT_BOLD
             when {
                 mLeftValue > mTotailValue / 2 -> {
-                    mPaint?.color = mCenterTextManyColor//画笔颜色
+                    it.color = mCenterTextManyColor//画笔颜色
                     mCenterText = mCenterTextMany //中间显示内容
                 }
                 mLeftValue < mTotailValue / 2 -> {
-                    mPaint?.color = mCenterTextFewColor
+                    it.color = mCenterTextFewColor
                     mCenterText = mCenterTextFew
                 }
                 else -> {
-                    mPaint?.color = mCenterTextColor
+                    it.color = mCenterTextColor
                     mCenterText = mCenterText
                 }
             }
             if (mCenterTextColorAlways != 0) {
-                mPaint?.color = mCenterTextColorAlways
+                it.color = mCenterTextColorAlways
             }
-            mPaint?.strokeWidth = 10f  //画笔宽度
-            return mPaint
-        } else {
-            return mPaintCircularText
+            paint = it
         }
+        return paint
     }
 
     //验证圆半径，不能大于高度的一半
@@ -747,33 +720,13 @@ class PercentageView : android.view.View {
         }
     }
 
-    //获取圆形图案画笔
-    private fun getPaintCricular(mPaintCircularbg: Paint?): Paint? {
-        return if (mPaintCircularbg != null) {
-            mPaintCircularbg
-        } else {
-            mPaint?.reset()
-            mPaint?.style = Paint.Style.FILL //画笔样式
-            mPaint?.isAntiAlias = true //抗锯齿
-            mPaint?.color = mCricularBgColor //画笔颜色
-            mPaint
-        }
-    }
-
-
     //获取分割线path
     private fun getCutLinePath(): Path? {
         resetLeftValue()
         return getCutPathByTilt()
     }
 
-
-    //重置进度值,使分隔线宽度>0时可以显示完全
-    private var mLeftTrueString = ""
-    private var mRightTrueString = ""
-
     private fun resetLeftValue() {
-
         var minProgressValue = if (mProgressRadius > 0) {
             abs(mTilt) + mLineSize / 2 + height / 2
         } else {
@@ -852,63 +805,74 @@ class PercentageView : android.view.View {
 
     //获取右边进度路径
     private fun getRadiusRightPath(mProgressRadius: Float): Path {
-        val path = Path()
-        if (mProgressRadius > 0f) {
-            if (mTilt > 0) {
-                path.moveTo(width * (mLeftValue / mTotailValue) + mLineSize / 2, 0f) //起始点
-                path.lineTo(width.toFloat() - height / 2, 0f) //第二个点
-                path.lineTo(width.toFloat() - height / 2, height.toFloat())
-                path.lineTo(
-                    width * (mLeftValue / mTotailValue) + mLineSize / 2 - mTilt,
-                    height.toFloat()
-                ) //第四个点
-            } else {
-                path.moveTo(width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt, 0f) //起始点
-                path.lineTo(width.toFloat() - height / 2, 0f) //第二个点
-                path.lineTo(width.toFloat() - height / 2, height.toFloat())
-                path.lineTo(width * (mLeftValue / mTotailValue) + mLineSize / 2, height.toFloat())
-            }
-            val rectF = RectF((width - height / 2).toFloat(), 0f, width.toFloat(), height.toFloat())
-            val floatArrayOf = floatArrayOf(
-                0f,
-                0f,
-                mProgressRadius,
-                mProgressRadius,
-                mProgressRadius,
-                mProgressRadius,
-                0f,
-                0f
-            )
-            path.addRoundRect(rectF, floatArrayOf, Path.Direction.CW)
 
-            path.addPath(path)
-        } else {
-            if (mTilt > 0) {
-                path.moveTo(width * (mLeftValue / mTotailValue) + mLineSize / 2, 0f) //起始点
-                path.lineTo(width.toFloat(), 0f) //第二个点
-                path.lineTo(width.toFloat(), height.toFloat())
-                path.lineTo(
-                    width * (mLeftValue / mTotailValue) + mLineSize / 2 - mTilt,
-                    height.toFloat()
+        if (mProgressRadius > 0f) {
+            var path = if (mTilt > 0) {
+                var listPoint = arrayOf(
+                    PoinEntity(width * (mLeftValue / mTotailValue) + mLineSize / 2, 0f),
+                    PoinEntity(width.toFloat() - height / 2, 0f),
+                    PoinEntity(width.toFloat() - height / 2, height.toFloat()),
+                    PoinEntity(
+                        width * (mLeftValue / mTotailValue) + mLineSize / 2 - mTilt,
+                        height.toFloat()
+                    )
                 )
+                PathFactory.createPath(RectanglePath(mPathChart, listPoint))!!
             } else {
-                path.moveTo(width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt, 0f) //起始点
-                path.lineTo(width.toFloat(), 0f) //第二个点
-                path.lineTo(width.toFloat(), height.toFloat())
-                path.lineTo(width * (mLeftValue / mTotailValue) + mLineSize / 2, height.toFloat())
+
+                var listPoint2 = arrayOf(
+                    PoinEntity(width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt, 0f),
+                    PoinEntity(width.toFloat() - height / 2, 0f),
+                    PoinEntity(width.toFloat() - height / 2, height.toFloat()),
+                    PoinEntity(
+                        width * (mLeftValue / mTotailValue) + mLineSize / 2,
+                        height.toFloat()
+                    )
+                )
+                PathFactory.createPath(RectanglePath(mPathChart, listPoint2))!!
+            }
+
+            val rectF = RectF((width - height / 2).toFloat(), 0f, width.toFloat(), height.toFloat())
+            PathFactory.createPath(FilletPath(rectF, 0f, mProgressRadius, mProgressRadius, 0f))
+                ?.let {
+                    path.addPath(it)
+                }
+            return path
+
+        } else {
+            return if (mTilt > 0) {
+                var listPoint1 = arrayOf(
+                    PoinEntity(width * (mLeftValue / mTotailValue) + mLineSize / 2, 0f),
+                    PoinEntity(width.toFloat(), 0f),
+                    PoinEntity(width.toFloat(), height.toFloat()),
+                    PoinEntity(
+                        width * (mLeftValue / mTotailValue) + mLineSize / 2 - mTilt,
+                        height.toFloat()
+                    )
+                )
+                PathFactory.createPath(RectanglePath(mPathChart, listPoint1))!!
+
+            } else {
+                var listPoint2 = arrayOf(
+                    PoinEntity(width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt, 0f),
+                    PoinEntity(width.toFloat(), 0f),
+                    PoinEntity(width.toFloat(), height.toFloat()),
+                    PoinEntity(
+                        width * (mLeftValue / mTotailValue) + mLineSize / 2,
+                        height.toFloat()
+                    )
+                )
+                PathFactory.createPath(RectanglePath(mPathChart, listPoint2))!!
             }
         }
-        path.close()
-        return path
     }
 
-    //-----------------------------------------------公共方法-----------------------------------
+//-----------------------------------------------公共方法-----------------------------------
 
-
-    fun setType(ttt: Type) {
-        this.mType = ttt
+    //设置类型
+    fun setType(mType: Type) {
+        this.mType = mType
     }
-
 
     //设置数据
     fun setData(many: Float, few: Float, toTail: Float) {
@@ -932,8 +896,20 @@ class PercentageView : android.view.View {
 
     //设置数据
     fun setData(many: Float, toTail: Float) {
-        mLeftValue = ((many * 100).roundToInt() / 100).toFloat() //如果要求精确4位就*10000然后/10000
-        mTotailValue = ((toTail * 100).roundToInt() / 100).toFloat()
+
+
+        val ddf1: NumberFormat = NumberFormat.getNumberInstance()
+
+        ddf1.setMaximumFractionDigits(2)
+        val s: String = ddf1.format(many)
+        mLeftValue = s.toFloat()
+
+        //mLeftValue = ((many * 100).roundToInt() / 100).toFloat() //如果要求精确4位就*10000然后/10000
+      //  mTotailValue = ((toTail * 100).roundToInt() / 100).toFloat()
+        mTotailValue = ddf1.format(toTail).toFloat()
+
+        Log.e(TAG, "setData处理后的值: $s   $mTotailValue" )
+
         mRightValue = mTotailValue - mLeftValue
 
         if (toTail > 1) {
@@ -951,23 +927,13 @@ class PercentageView : android.view.View {
     }
 
 
-    //-----------------------------------------------内部通用方法-----------------------------------
-
-    //获取指定颜色的填充画笔
-    private fun getColorPaint(mColor: Int): Paint? {
-        mPaint?.reset()
-        mPaint?.style = Paint.Style.FILL //画笔样式
-        mPaint?.isAntiAlias = true //抗锯齿
-        mPaint?.color = mColor //画笔颜色
-        return mPaint
-    }
+//-----------------------------------------------内部通用方法-----------------------------------
 
 
     //是否有分割线
     private fun haveCutLine(): Boolean {
         return mLineSize > 0f
     }
-
 
     //通过倾斜度获取完整的分割线路径
     private fun getCutPathByTilt(): Path? {
@@ -991,7 +957,6 @@ class PercentageView : android.view.View {
             )
 
         } else {
-
             PathFactory.createPath(
                 RectanglePath(
                     mPathChart,
@@ -1011,4 +976,42 @@ class PercentageView : android.view.View {
         }
     }
 
+
+//-----------------------------------------------Builder模式创建-----------------------------------
+
+
+    constructor(context: Context?, build: PercentageViewBuilder) : super(context) {
+        this.mMinHeight = build.mMinHeight
+        this.mMinWidth = build.mMinWidth
+        this.mTextLeftColor = build.mTextLeftColor
+        this.mLeftValue = build.mLeftValue
+        this.mTotailValue = build.mTotailValue
+        this.mLeftColor = build.mLeftColor
+        this.mRightValue = build.mRightValue
+        this.mProgressRadius = build.mProgressRadius
+        this.mTextRightColor = build.mTextRightColor
+        this.mRightColor = build.mRightColor
+        this.mValueTextSize = build.mValueTextSize
+        this.mCenterTextSize = build.mCenterTextSize
+        this.mPadding = build.mPadding
+        this.mShowProgressText = build.mShowProgressText
+        this.mProgressUnit = build.mProgressUnit
+        this.mCenterTextMany = build.mCenterTextMany
+        this.mCenterTextFew = build.mCenterTextFew
+        this.mCenterText = build.mCenterText
+        this.mRadius = build.mRadius
+        this.mCricularBgColor = build.mCricularBgColor
+        this.mTilt = build.mTilt
+        this.mLineSize = build.mLineSize
+        this.mLineColor = build.mLineColor
+        this.mHaveLimitValue = build.mHaveLimitValue
+        this.showLeftText = build.showLeftText
+        this.showRightText = build.showRightText
+        this.mCenterTextManyColor = build.mCenterTextManyColor
+        this.mCenterTextFewColor = build.mCenterTextFewColor
+        this.mCenterTextColorAlways = build.mCenterTextColorAlways
+        this.mCenterTextColor = build.mCenterTextColor
+
+        initData(context, null)
+    }
 }

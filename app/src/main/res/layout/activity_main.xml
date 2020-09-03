@@ -398,5 +398,14 @@
             app:ProgressRadius="10dp"
             app:RightProgress="45" />
 
+
+        <LinearLayout
+            android:id="@+id/emptyView"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
