@@ -1,4 +1,4 @@
-package com.ywy.percentageview.path
+package com.ywy.percentageview.paths
 
 import android.graphics.Path
 import android.graphics.RectF
@@ -29,7 +29,7 @@ class FilletPath : BasePath{
         initData()
     }
 
-    constructor(rectf: RectF,points:Array<PoinEntity>,leftTopRadius:Float,rightTopRadius:Float,rightBottomRadius:Float,leftBottomRadius:Float){
+    constructor(rectf: RectF,leftTopRadius:Float,rightTopRadius:Float,rightBottomRadius:Float,leftBottomRadius:Float){
         this.rectf = rectf
         this.path = Path()
 

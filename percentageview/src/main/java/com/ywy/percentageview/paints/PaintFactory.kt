@@ -1,4 +1,4 @@
-package com.ywy.percentageview.paint
+package com.ywy.percentageview.paints
 
 import android.graphics.Paint
 

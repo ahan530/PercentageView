@@ -1,6 +1,4 @@
-package com.ywy.percentageview.path
-
-import android.animation.FloatEvaluator
+package com.ywy.percentageview.paths
 
 /**
  *Time:2020/9/2

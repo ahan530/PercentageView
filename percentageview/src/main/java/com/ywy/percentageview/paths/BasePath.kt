@@ -1,8 +1,6 @@
-package com.ywy.percentageview.path;
+package com.ywy.percentageview.paths;
 
 import android.graphics.Path;
-
-import java.util.ArrayList;
 
 /**
  * Time:2020/9/2

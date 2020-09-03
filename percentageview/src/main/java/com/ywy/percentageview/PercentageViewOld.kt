@@ -4,10 +4,6 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
-import com.ywy.percentageview.paint.PaintFactory
-import com.ywy.percentageview.paint.SolidPaint
-import com.ywy.percentageview.path.FilletPath
-import com.ywy.percentageview.path.PathFactory
 
 import kotlin.math.abs
 import kotlin.math.roundToInt

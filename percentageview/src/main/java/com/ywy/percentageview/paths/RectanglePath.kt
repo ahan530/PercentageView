@@ -1,7 +1,6 @@
-package com.ywy.percentageview.path
+package com.ywy.percentageview.paths
 
 import android.graphics.Path
-import java.util.ArrayList
 
 /**
  *Time:2020/9/2
@@ -14,8 +13,8 @@ class RectanglePath : BasePath {
         list = list1
        initData()
     }
-    constructor(path: Path,list1: Array<PoinEntity>){
-        path.reset()
+    constructor(path: Path?,list1: Array<PoinEntity>){
+        path?.reset()
         this.path = path
         list = list1
         initData()

@@ -4,10 +4,13 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
-import com.ywy.percentageview.paint.PaintFactory
-import com.ywy.percentageview.paint.SolidPaint
-import com.ywy.percentageview.path.FilletPath
-import com.ywy.percentageview.path.PathFactory
+import com.ywy.percentageview.paints.PaintFactory
+import com.ywy.percentageview.paints.SolidPaint
+import com.ywy.percentageview.paints.TextPaint
+import com.ywy.percentageview.paths.FilletPath
+import com.ywy.percentageview.paths.PathFactory
+import com.ywy.percentageview.paths.PoinEntity
+import com.ywy.percentageview.paths.RectanglePath
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -17,6 +20,7 @@ import kotlin.math.roundToInt
  * Description: 百分比图形
  **/
 const val TAG = "PercentageView"
+
 class PercentageView : android.view.View {
 
     private var mType = Type.NORMAL
@@ -24,9 +28,9 @@ class PercentageView : android.view.View {
     enum class Type {
         PURE, //模式- 纯净模式下没有分割线,但是可以绘制左右进度文字
         NORMAL, //模式二 默认模式
-       // DIVISION //模式三 分割模式，对分割首尾没有限制但不能设置倾斜度
+        // DIVISION //模式三 分割模式，对分割首尾没有限制但不能设置倾斜度
     }
-    
+
 
     constructor(context: Context?) : super(context) {
         initData(context, null)
@@ -190,7 +194,8 @@ class PercentageView : android.view.View {
                 mLineColor = lineColor
             }
 
-              val haveLimiValue = obt?.getBoolean(R.styleable.PercentageView_HaveLimiValue, mHaveLimitValue)
+            val haveLimiValue =
+                obt?.getBoolean(R.styleable.PercentageView_HaveLimiValue, mHaveLimitValue)
             if (haveLimiValue != null) {
                 mHaveLimitValue = haveLimiValue
             }
@@ -369,21 +374,6 @@ class PercentageView : android.view.View {
         //  setMeasuredDimension(widthSize, heightSize)
     }
 
-    //画笔样式
-    //Paint.Style.FILL //填充
-    //Paint.Style.FILL_AND_STROKE //描边加填充
-    //Paint.Style.STROKE;//描边
-
-    //笔帽样式 笔头
-    //mPaint.setStrokeCap(Paint.Cap.BUTT);//没有样式
-    //mPaint.setStrokeCap(Paint.Cap.ROUND);//圆形
-    //mPaint.setStrokeCap(Paint.Cap.SQUARE);//方形
-
-    //两线相交样式
-    //mPaint.setStrokeJoin(Paint.Join.MITER);//锐角
-    //mPaint.setStrokeJoin(Paint.Join.ROUND);//圆角
-    //mPaint.setStrokeJoin(Paint.Join.BEVEL);//直线
-
     //三：绘制
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
@@ -398,20 +388,10 @@ class PercentageView : android.view.View {
                     drawProgressText(canvas)
                 }
             }
-            //模式三 临界值不完善
-//            Type.DIVISION -> {
-//                drawDivision(canvas)
-//                if (mShowProgressText) {
-//                    //绘制左右两边边文字
-//                    drawProgressText(canvas)
-//                }
-//            }
             //默认模式
             else -> {
-
-
                 //无圆角
-                if ( mProgressRadius <= 0 || mHaveLimitValue ) {
+                if (mProgressRadius <= 0 || mHaveLimitValue) {
                     /**
                      * step1:绘制中间分隔线
                      */
@@ -451,8 +431,6 @@ class PercentageView : android.view.View {
                     drawCenterText(canvas)
                 }
             }
-
-
         }
     }
 
@@ -461,113 +439,68 @@ class PercentageView : android.view.View {
 
     //0:画纯净bar
     private fun drawPureBar(canvas: Canvas?) {
-        var pathOne: Path? = PathFactory.createPath(FilletPath(RectF(0f,0f,width.toFloat(),height.toFloat()),mPathChart,mProgressRadius,mProgressRadius,mProgressRadius,mProgressRadius))
-        var paintOne: Paint? = PaintFactory.createPaint(SolidPaint(mPaint,mRightColor))
+        var pathOne: Path? = PathFactory.createPath(
+            FilletPath(
+                RectF(0f, 0f, width.toFloat(), height.toFloat()),
+                mPathChart,
+                mProgressRadius,
+                mProgressRadius,
+                mProgressRadius,
+                mProgressRadius
+            )
+        )
+        var paintOne: Paint? = PaintFactory.createPaint(SolidPaint(mPaint, mRightColor))
 
         pathOne?.let {
-            paintOne?.let { it2->
+            paintOne?.let { it2 ->
                 canvas?.drawPath(it, it2)
             }
         }
 
-        val pathTwo =  PathFactory.createPath(FilletPath(RectF(0f,0f,width * (mLeftValue / mTotailValue),height.toFloat()),mPathChart,mProgressRadius,mProgressRadius,mProgressRadius,mProgressRadius))
+        val pathTwo = PathFactory.createPath(
+            FilletPath(
+                RectF(
+                    0f,
+                    0f,
+                    width * (mLeftValue / mTotailValue),
+                    height.toFloat()
+                ), mPathChart, mProgressRadius, mProgressRadius, mProgressRadius, mProgressRadius
+            )
+        )
         paintOne?.color = mLeftColor
         pathTwo?.let {
-            paintOne?.let {it2->
+            paintOne?.let { it2 ->
                 canvas?.drawPath(it, it2)
-            }
-        }
-    }
-
-    //0.1:分割符bar
-    private fun drawDivision(canvas: Canvas?) {
-       mPathChart?:return
-
-         getNewPath(
-            mPathChart,
-            0f,
-            0f,
-            width * (mLeftValue / mTotailValue),
-            height.toFloat(),
-            mProgressRadius,
-            mProgressRadius,
-            0f,
-            0f
-        )?.let {
-             getColorPaint(mLeftColor)?.let {it1->
-                canvas?.drawPath(it,it1)
-            }
-        }
-
-         getNewPath(
-             mPathChart,
-            width * (mLeftValue /mTotailValue),
-            0f,
-            width.toFloat(),
-            height.toFloat(),
-            0f,
-            0f,
-            mProgressRadius,
-            mProgressRadius
-        )?.let {
-             getColorPaint(mRightColor)?.let {it1->
-                 canvas?.drawPath(it,it1)
-             }
-         }
-
-        val currentValue = width * (mLeftValue / mTotailValue)
-        var cutlinePath= if (mTilt > 0) {
-             getRagularPath(
-                mPathChart!!,
-                currentValue, 0f,
-                currentValue + mLineSize, 0f,
-                currentValue, height.toFloat(),
-                currentValue - mLineSize, height.toFloat()
-            )
-        }else{
-            getRagularPath(
-                mPathChart!!,
-                currentValue-mLineSize, 0f,
-                currentValue , 0f,
-                currentValue+mLineSize, height.toFloat(),
-                currentValue , height.toFloat()
-            )
-        }
-        cutlinePath?.let {
-            getColorPaint(mLineColor)?.let {it1->
-                canvas?.drawPath(it,it1)
             }
         }
     }
 
     //1:画分隔符
     private fun drawCutLine(canvas: Canvas?) {
-        //获取分隔线的path
-        var pathCutLine: Path? = getCutLinePath()
-
-        if (pathCutLine != null) {
-            //获取分割线画笔
-            var paintCutLine = getColorPaint(mLineColor)
-            if (paintCutLine != null) {
-                canvas?.drawPath(pathCutLine, paintCutLine)
+        if (haveCutLine()) {
+            //获取分隔线的path
+            getCutLinePath()?.let {
+                //获取分割线画笔
+                PaintFactory.createPaint(SolidPaint(mPaint, mLineColor))?.let { it2 ->
+                    canvas?.drawPath(it, it2)
+                }
             }
         }
     }
 
     //2：绘制无圆角左边进度
     private fun drawRectLeft(canvas: Canvas?) {
-        var pathLeft = if (mProgressRadius<=0){
+        //获取坐标路径
+        var pathLeft = if (mProgressRadius <= 0) {
             getRectLeftPath()
-        }else{
+        } else {
             getRadiusLeftPath(mProgressRadius)
         }
+        //获取进度画笔
+        val progressLeftPaint = PaintFactory.createPaint(SolidPaint(mPaint, mLeftColor))
 
-        //获取进度画笔 画左边
-        val progressLeftPaint = getColorPaint(mLeftColor)
-
-        //开始绘制
-        if (progressLeftPaint != null && pathLeft != null) {
-            canvas!!.drawPath(pathLeft!!, progressLeftPaint!!)
+        pathLeft?.let {
+            progressLeftPaint?.let { it2 -> canvas?.drawPath(it, it2) }
         }
     }
 
@@ -587,8 +520,19 @@ class PercentageView : android.view.View {
     private fun drawCornerProgress(canvas: Canvas?) {
         Log.i(TAG, "onDraw: 有圆角")
         //获取第一层path
-        var pathOne: Path? = getFirstPath()
-        var paintOne: Paint? = getColorPaint(mRightColor)
+        var pathOne: Path? = PathFactory.createPath(
+            FilletPath(
+                RectF(0f, 0f, width.toFloat(), height.toFloat()),
+                mPathChart,
+                mProgressRadius,
+                mProgressRadius,
+                mProgressRadius,
+                mProgressRadius
+            )
+        )
+
+        var paintOne: Paint? = PaintFactory.createPaint(SolidPaint(mPaint, mRightColor))
+
         //获取第二层path
         if (paintOne != null && pathOne != null) {
             //现将第一层画出
@@ -619,20 +563,20 @@ class PercentageView : android.view.View {
             //有分割线
             if (haveCutLine()){
                 val  region4 = Region()
-                 getCutPathByTilt()?.let {
-                     region4.setPath(it,region)
+                getCutPathByTilt()?.let {
+                    region4.setPath(it,region)
                     val op2 = region4.op(region2,Region.Op.INTERSECT)
-                     paintOne.color = mLineColor
+                    paintOne.color = mLineColor
 
-                     Log.i(TAG, "onDraw: 绘制分割线$op2")
-                     if (op2){
-                         val iterator = RegionIterator(region4)
-                         val rect = Rect()
-                         while (iterator.next(rect)) {
-                             canvas!!.drawRect(rect, paintOne)
-                         }
-                     }
-                 }
+                    Log.i(TAG2, "onDraw: 绘制分割线$op2")
+                    if (op2){
+                        val iterator = RegionIterator(region4)
+                        val rect = Rect()
+                        while (iterator.next(rect)) {
+                            canvas!!.drawRect(rect, paintOne)
+                        }
+                    }
+                }
             }
         }
     }
@@ -640,7 +584,9 @@ class PercentageView : android.view.View {
     //4：绘制左右文字
     private fun drawProgressText(canvas: Canvas?) {
         //获取进度值画笔
-        var mTextPaint = getProgressTextPaint()
+        var mTextPaint =
+            PaintFactory.createPaint(TextPaint(mPaintText, mTextLeftColor, mValueTextSize))
+
         //绘制左边进度文字
         if (showLeftText) {
             if (mTextPaint != null) {
@@ -656,10 +602,7 @@ class PercentageView : android.view.View {
                 Log.i(TAG, "左边onDraw:绘制内容： $valueString")
                 //绘制
                 canvas?.drawText(
-                    valueString,
-                    0f + mPadding,
-                    y,
-                    mTextPaint!!
+                    valueString, 0f + mPadding, y, mTextPaint!!
                 )
             }
         }
@@ -717,61 +660,49 @@ class PercentageView : android.view.View {
 
     //矩形左边区域
     private fun getRectLeftPath(): Path? {
-        mPathChart?.reset()
-        mPathChart?.moveTo(0f, 0f) //起始点
-        if (mTilt > 0) {
-            mPathChart?.lineTo(width * (mLeftValue / mTotailValue) - mLineSize / 2, 0f) //第二个点
-            mPathChart?.lineTo(
-                width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2,
-                height.toFloat()
+        return if (mTilt > 0) {
+            val arrayOf1 = arrayOf(
+                PoinEntity(0f, 0f),
+                PoinEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2, 0f),
+                PoinEntity(
+                    width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2,
+                    height.toFloat()
+                ),
+                PoinEntity(0f, height.toFloat())
             )
+            PathFactory.createPath(RectanglePath(mPathChart, arrayOf1))
+
         } else {
-            mPathChart?.lineTo(
-                width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt,
-                0f
-            ) //第二个点
-            mPathChart?.lineTo(
-                width * (mLeftValue / mTotailValue) - mLineSize / 2,
-                height.toFloat()
+            val arrayOf2 = arrayOf(
+                PoinEntity(0f, 0f),
+                PoinEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt, 0f),
+                PoinEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2, height.toFloat()),
+                PoinEntity(0f, height.toFloat())
             )
+            PathFactory.createPath(RectanglePath(mPathChart, arrayOf2))
         }
-        mPathChart?.lineTo(0f, height.toFloat())
-        mPathChart?.close() //闭合图形
-        return mPathChart
     }
 
 
     //圆角无分隔符情况下的第二层的路径
     private fun getSecoundPath(): Path? {
-        var mPathChartadd = Path()
-        mPathChartadd?.moveTo(0f, 0f)
-        if (mTilt > 0) {
-            mPathChartadd?.lineTo(width * (mLeftValue / mTotailValue), 0f)
-            mPathChartadd?.lineTo(width * (mLeftValue / mTotailValue) - mTilt, height.toFloat())
-
+        return if (mTilt > 0) {
+            var listPoint1 = arrayOf(
+                PoinEntity(0f, 0f),
+                PoinEntity(width * (mLeftValue / mTotailValue), 0f),
+                PoinEntity(width * (mLeftValue / mTotailValue) - mTilt, height.toFloat()),
+                PoinEntity(0f, height.toFloat())
+            )
+            PathFactory.createPath(RectanglePath(listPoint1))
         } else {
-            mPathChartadd?.lineTo(width * (mLeftValue / mTotailValue) + mTilt, 0f)
-            mPathChartadd?.lineTo(width * (mLeftValue / mTotailValue), height.toFloat())
+            var listPoint2 = arrayOf(
+                PoinEntity(0f, 0f),
+                PoinEntity(width * (mLeftValue / mTotailValue) + mTilt, 0f),
+                PoinEntity(width * (mLeftValue / mTotailValue), height.toFloat()),
+                PoinEntity(0f, height.toFloat())
+            )
+            PathFactory.createPath(RectanglePath(listPoint2))
         }
-        mPathChartadd?.lineTo(0f, height.toFloat())
-        mPathChartadd?.close()
-        return mPathChartadd
-    }
-
-
-    //圆角无分隔符情况下的第一层的路径
-    private fun getFirstPath(): Path? {
-        return getNewPath(
-            null,
-            0f,
-            0f,
-            width.toFloat(),
-            height.toFloat(),
-            mProgressRadius,
-            mProgressRadius,
-            mProgressRadius,
-            mProgressRadius
-        )
     }
 
 
@@ -829,59 +760,18 @@ class PercentageView : android.view.View {
         }
     }
 
-    //获取进度值画笔
-    private fun getProgressTextPaint(): Paint? {
-        //画文字左边 https://www.jianshu.com/p/3aa9dc7d3320
-        mPaint?.reset()
-        mPaint?.style = Paint.Style.FILL //画笔样式
-        mPaint?.isAntiAlias = true //抗锯齿
-        mPaint?.color = mTextLeftColor //画笔颜色
-        mPaint?.strokeWidth = 2f  //画笔宽度
-
-        mPaint?.strokeCap = Paint.Cap.BUTT //笔帽样式
-        mPaint?.strokeJoin = Paint.Join.BEVEL //相交样式
-        mPaint?.textSize = mValueTextSize//字体大小
-        mPaint?.textAlign = Paint.Align.LEFT//左对齐
-        //        mPaint?.isDither = true //图像抖动
-        //        mPaint?.letterSpacing = 4f //字符间距
-        //        mPaint?.textSkewX = -0.25f //文字倾斜 默认0，官方推荐的-0.25f是斜体
-
-        //计算制定长度的字符串
-        //measureForwards为true,从头开始测否则从尾向前测 maxWidth 最大的宽度 measuredWidth实测长度
-        //        var breadText = mPaint?.breakText("$mLeftValue", true, width/2-mPadding, floatArrayOf(width/3-mPadding))
-
-        //获取文本的矩形区域
-        //        val bounds = Rect()
-        //        val textBounds = mPaint?.getTextBounds("$mLeftValue", 0, "$mLeftValue".length - 1, bounds)
-
-        //        var measuredWidth =  FloatArray("$mLeftValue".length) //新建长度为内容长度的数组
-        //measuredWidth得到每一个字符的宽度；textWidths字符数
-        //        var textWidths = mPaint?.getTextWidths("$mLeftValue", measuredWidth)
-
-        //粗略获取文本宽度
-        //        val measureText = mPaint?.measureText("$mLeftValue")
-        //        val textWidths1 = mPaint?.getTextWidths("$mLeftValue", 0, "$mLeftValue".length - 1, measuredWidth)
-        return mPaint
-    }
 
     //获取分割线path
     private fun getCutLinePath(): Path? {
-        //确定有无分隔线
-        if (haveCutLine()) {
-            resetLeftValue()
-            if (mPathChart == null) return null
-            mPathChart?.reset()
-            return getCutPathByTilt()
-        }
-        return null
+        resetLeftValue()
+        return getCutPathByTilt()
     }
-
-
 
 
     //重置进度值,使分隔线宽度>0时可以显示完全
     private var mLeftTrueString = ""
     private var mRightTrueString = ""
+
     private fun resetLeftValue() {
 
         var minProgressValue = if (mProgressRadius > 0) {
@@ -921,86 +811,43 @@ class PercentageView : android.view.View {
                 showLeftText = true
             }
         }
-
     }
-
-
-
-
 
     //获取带指定圆角的path对象
     private fun getRadiusLeftPath(mProgressRadius: Float): Path? {
-        /**
-         * 有圆角
-         */
-        if (mProgressRadius > 0f) {
-            mPathChart?.reset()
-            mPathChartAdd?.reset()
-            mPathChartAdd?.moveTo(height.toFloat() / 2, 0f) //起始点
-            if (mTilt > 0) {
-                mPathChartAdd?.lineTo(
-                    width * (mLeftValue / mTotailValue) - mLineSize / 2,
-                    0f
-                ) //第二个点
-                mPathChartAdd?.lineTo(
+        var pathNew = if (mTilt > 0) {
+            var pointList1 = arrayOf(
+                PoinEntity(height.toFloat() / 2, 0f),
+                PoinEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2, 0f),
+                PoinEntity(
                     width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2,
                     height.toFloat()
-                )
-            } else {
-                mPathChartAdd?.lineTo(
-                    width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt,
-                    0f
-                ) //第二个点
-                mPathChartAdd?.lineTo(
-                    width * (mLeftValue / mTotailValue) - mLineSize / 2,
-                    height.toFloat()
-                )
-            }
-            mPathChartAdd?.lineTo(height.toFloat() / 2, height.toFloat())
-
-            val rectF = RectF(0f, 0f, height.toFloat() / 2, height.toFloat())
-            val floatArrayOf = floatArrayOf(
-                mProgressRadius,
-                mProgressRadius,
-                0f,
-                0f,
-                0f,
-                0f,
-                mProgressRadius,
-                mProgressRadius
+                ),
+                PoinEntity(height.toFloat() / 2, height.toFloat())
             )
-            mPathChart?.addRoundRect(rectF, floatArrayOf, Path.Direction.CW)
+            PathFactory.createPath(RectanglePath(mPathChartAdd, pointList1))
+        } else {
+            var pointList2 = arrayOf(
+                PoinEntity(height.toFloat() / 2, 0f),
+                PoinEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt, 0f),
+                PoinEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2, height.toFloat()),
+                PoinEntity(height.toFloat() / 2, height.toFloat())
+            )
+            PathFactory.createPath(RectanglePath(mPathChartAdd, pointList2))
+        }
+        var path = PathFactory.createPath(
+            FilletPath(
+                RectF(0f, 0f, height.toFloat() / 2, height.toFloat()),
+                mPathChart,
+                mProgressRadius, 0f, 0f, mProgressRadius
+            )
+        )
 
-            if (mPathChartAdd != null) {
-                mPathChart?.addPath(mPathChartAdd!!)
-            }
+        pathNew?.let {
+            path?.addPath(it)
+            path?.close() //闭合图形
         }
-        /**
-         * 无圆角
-         */
-        else {
-            mPathChart?.reset()
-            mPathChart?.moveTo(0f, 0f) //起始点
-            if (mTilt > 0) {
-                mPathChart?.lineTo(width * (mLeftValue / mTotailValue) - mLineSize / 2, 0f) //第二个点
-                mPathChart?.lineTo(
-                    width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2,
-                    height.toFloat()
-                )
-            } else {
-                mPathChart?.lineTo(
-                    width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt,
-                    0f
-                ) //第二个点
-                mPathChart?.lineTo(
-                    width * (mLeftValue / mTotailValue) - mLineSize / 2,
-                    height.toFloat()
-                )
-            }
-            mPathChart?.lineTo(0f, height.toFloat())
-        }
-        mPathChart?.close() //闭合图形
-        return mPathChart
+        return path
     }
 
     //获取右边进度路径
@@ -1115,78 +962,51 @@ class PercentageView : android.view.View {
         return mPaint
     }
 
-    //获取四个点的封闭路径
-    private fun getRagularPath(
-        path: Path, onePointx: Float, onePointy: Float,
-        twoPointx: Float, twoPointy: Float,
-        threePointx: Float, threePointy: Float,
-        fourPointx: Float, fourPointy: Float
-    ): Path {
-        path?.reset()
-        path?.moveTo(onePointx, onePointy) //第1个点
-        path?.lineTo(twoPointx, twoPointy) //第2个点
-        path?.lineTo(threePointx, threePointy)//第3个点
-        path?.lineTo(fourPointx, fourPointy)//第4个点
-        path?.close()
-        return path
-    }
 
     //是否有分割线
     private fun haveCutLine(): Boolean {
         return mLineSize > 0f
     }
 
-    //建一个带圆角的起始位置为0,0 终点位置不定的Path路径
-    private fun getNewPath(
-        mPathOld: Path?,
-        beginX: Float,
-        beginY: Float,
-        lastX: Float,
-        lastY: Float,
-        leftTop: Float,
-        leftBottom: Float,
-        rightTop: Float,
-        rightBottom: Float
-    ): Path? {
-        val rectF = RectF(beginX, beginY, lastX, lastY)
-        val floatArrayOf = floatArrayOf(
-            leftTop,
-            leftTop,
-            rightTop,
-            rightTop,
-            rightBottom,
-            rightBottom,
-            leftBottom,
-            leftBottom
-        )
-        return if (mPathOld == null) {
-            var mPath = Path()
-            mPath.addRoundRect(rectF, floatArrayOf, Path.Direction.CW)
-            mPath
-        } else {
-            mPathOld.reset()
-            mPathOld?.addRoundRect(rectF, floatArrayOf, Path.Direction.CW)
-            mPathOld
-        }
-    }
 
     //通过倾斜度获取完整的分割线路径
     private fun getCutPathByTilt(): Path? {
         return if (mTilt > 0) {
-            getRagularPath(
-                mPathChart!!,
-                width * (mLeftValue / mTotailValue) - mLineSize / 2, 0f,
-                width * (mLeftValue / mTotailValue) + mLineSize / 2, 0f,
-                width * (mLeftValue / mTotailValue) - mTilt + mLineSize / 2, height.toFloat(),
-                width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2, height.toFloat()
+            PathFactory.createPath(
+                RectanglePath(
+                    mPathChart,
+                    arrayOf(
+                        PoinEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2, 0f),
+                        PoinEntity(width * (mLeftValue / mTotailValue) + mLineSize / 2, 0f),
+                        PoinEntity(
+                            width * (mLeftValue / mTotailValue) - mTilt + mLineSize / 2,
+                            height.toFloat()
+                        ),
+                        PoinEntity(
+                            width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2,
+                            height.toFloat()
+                        )
+                    )
+                )
             )
+
         } else {
-            getRagularPath(
-                mPathChart!!,
-                width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt, 0f,
-                width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt, 0f,
-                width * (mLeftValue / mTotailValue) + mLineSize / 2, height.toFloat(),
-                width * (mLeftValue / mTotailValue) - mLineSize / 2, height.toFloat()
+
+            PathFactory.createPath(
+                RectanglePath(
+                    mPathChart,
+                    arrayOf(
+                        PoinEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt, 0f),
+                        PoinEntity(width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt, 0f),
+                        PoinEntity(
+                            width * (mLeftValue / mTotailValue) + mLineSize / 2,
+                            height.toFloat()
+                        ),
+                        PoinEntity(
+                            width * (mLeftValue / mTotailValue) - mLineSize / 2, height.toFloat()
+                        )
+                    )
+                )
             )
         }
     }
