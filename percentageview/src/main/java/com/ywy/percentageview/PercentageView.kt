@@ -68,7 +68,7 @@ class PercentageView : android.view.View {
     var mLeftColor = Color.parseColor("#5498f0")
 
     //左边进度值
-    var mRightValue = 100.0f
+    private var mRightValue = 100.0f
 
     //进度条弧度
     var mProgressRadius = 0f
@@ -987,7 +987,6 @@ class PercentageView : android.view.View {
         this.mLeftValue = build.mLeftValue
         this.mTotailValue = build.mTotailValue
         this.mLeftColor = build.mLeftColor
-        this.mRightValue = build.mRightValue
         this.mProgressRadius = build.mProgressRadius
         this.mTextRightColor = build.mTextRightColor
         this.mRightColor = build.mRightColor
