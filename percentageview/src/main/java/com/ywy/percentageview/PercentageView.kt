@@ -429,6 +429,7 @@ class PercentageView : android.view.View {
         }
     }
 
+ 
     private fun needDrawCenter():Boolean{
         getRadius()
         if (mProgressRadius > 0 && !mHaveLimitValue) { //无极限值 越界情况
