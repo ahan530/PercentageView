@@ -86,6 +86,7 @@ class TextPaint :BasePaint{
         paint?.let {
             it.textSize = textSize
             it.strokeWidth = widthPaint
+            it.isAntiAlias = true
             color?.let {it2->
                 it.color = it2
             }

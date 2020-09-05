@@ -29,9 +29,13 @@ class MainActivity : AppCompatActivity() {
         mPercentageView01.setType(PercentageView.Type.PURE)
         mPercentageView01.setData(36f,100f)
 
-        //3：极限值
+        //3：极限值  左边
         mPercentageView02.setType(PercentageView.Type.PURE)
         mPercentageView02.setData(3f,100f)
+
+        //4：极限值 右边
+        mPercentageView03.setType(PercentageView.Type.PURE)
+        mPercentageView03.setData(98.5f,100f)
 
         /**
          * 普通模式
@@ -92,26 +96,54 @@ class MainActivity : AppCompatActivity() {
         //5.4 右极限
         mPercentageView54.setData(100f,100f)
 
-        //6
-        mPercentageView6.setData(50f,100f)
+        //5.5：左极限 mtilt <0
+        mPercentageView55.setData(0f,100f)
+        //5.6 右极限 mtilt <0
+        mPercentageView56.setData(100f,100f)
 
-        //7
-        mPercentageView7.setData(50.2f,100f)
+
+        //6:圆角不同色切割线多个文字
+        mPercentageView6.setData(50f,100f)
+        mPercentageView61.setData(0f,100f)
+        mPercentageView62.setData(100f,100f)
+
+        //7:无极限值情况下的极限值显示
+        mPercentageView70.setData(50.2f,100f)
+        mPercentageView700.setData(0f,100f)
+        mPercentageView7000.setData(100f,100f)
+        mPercentageView70000.setData(8f,100f)
+
         mPercentageView71.setData(40.3f,100f)
+        mPercentageView711.setData(0f,100f)
+        mPercentageView7111.setData(100f,100f)
+        mPercentageView71111.setData(0f,100f)
+        mPercentageView711111.setData(100f,100f)
+
         mPercentageView72.setData(36.2f,100f)
+        mPercentageView722.setData(0f,100f)
+        mPercentageView7222.setData(100f,100f)
+
         mPercentageView73.setData(76f,100f)
+        mPercentageView733.setData(0f,100f)
+        mPercentageView7333.setData(100f,100f)
 
         //8:有分割线无极限值限制
         mPercentageView8.setData(51f,100f)
-        mPercentageView81.setData(6f,100f)
+        mPercentageView80.setData(0f,100f)
+        mPercentageView800.setData(100f,100f)
 
-        //9:使用代码添加
-        val build = PercentageViewBuilder
+        mPercentageView81.setData(6f,100f)
+        mPercentageView811.setData(98f,100f)
+        mPercentageView8111.setData(66f,100f)
+        mPercentageView81111.setData(0f,100f)
+        mPercentageView811111.setData(100f,100f)
+
+        //9:使用代码添加,父布局约束宽高
+        val build = PercentageViewBuilder  .with(this)
             .setMinHeight(60f)
             .setMinWidth(129f)
             .setLeftValue(45.6f)
-            .build(this)
-
+            .build()
         emptyView.addView(build)
 
     }

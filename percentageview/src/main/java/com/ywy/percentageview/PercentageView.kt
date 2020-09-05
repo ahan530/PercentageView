@@ -59,7 +59,7 @@ class PercentageView : android.view.View {
     var mTextLeftColor = Color.parseColor("#ffffff")
 
     //左边坐标进度 布局设置0~100
-    var mLeftValue = 0.00f
+    var mLeftValue = 0f
 
     //总值
     var mTotailValue = 100.0f
@@ -167,146 +167,145 @@ class PercentageView : android.view.View {
                 mMinHeight = it
             }
 
-            val wight =
-                obt?.getDimension(R.styleable.PercentageView_ProgressMinWidth, mMinWidth)?.let {
-                    mMinWidth = it
-                }
 
-            val tilt = obt?.getFloat(R.styleable.PercentageView_CenterLineTilt, mTilt)?.let {
+            obt?.getDimension(R.styleable.PercentageView_ProgressMinWidth, mMinWidth)?.let {
+                mMinWidth = it
+            }
+
+            obt?.getFloat(R.styleable.PercentageView_CenterLineTilt, mTilt)?.let {
                 mTilt = it
             }
 
-            val lineSize = obt?.getDimension(R.styleable.PercentageView_CenterLineSize, mLineSize)
-            if (lineSize != null) {
-                mLineSize = lineSize
-            }
+            obt?.getDimension(R.styleable.PercentageView_CenterLineSize, mLineSize)
+                ?.let {
+                    mLineSize = it
+                }
 
             obt?.getDimension(R.styleable.PercentageView_ProgressRadius, mProgressRadius)?.let {
                 mProgressRadius = it
             }
 
-            val progressUnit = obt?.getString(R.styleable.PercentageView_ProgressUnit)
-            if (progressUnit != null) {
-                mProgressUnit = progressUnit
-            }
-
-            val lineColor = obt?.getColor(R.styleable.PercentageView_CenterLineColor, mLineColor)
-            if (lineColor != null) {
-                mLineColor = lineColor
-            }
-
-            val haveLimiValue =
-                obt?.getBoolean(R.styleable.PercentageView_HaveLimiValue, mHaveLimitValue)
-            if (haveLimiValue != null) {
-                mHaveLimitValue = haveLimiValue
-            }
-
-            val leftColor = obt?.getColor(R.styleable.PercentageView_textLeftColor, mTextLeftColor)
-            if (leftColor != null) {
-                mTextLeftColor = leftColor
-            }
-            val rightColor =
-                obt?.getColor(R.styleable.PercentageView_textRightColor, mTextRightColor)
-            if (rightColor != null) {
-                mTextRightColor = rightColor
-            }
-
-            val textSize =
-                obt?.getDimension(R.styleable.PercentageView_android_textSize, mValueTextSize)
-            if (textSize != null) {
-                mValueTextSize = textSize
-            }
-
-            val showProgressText =
-                obt?.getBoolean(R.styleable.PercentageView_ShowProgressText, mShowProgressText)
-            if (showProgressText != null) {
-                mShowProgressText = showProgressText
-            }
-
-            val radius = obt?.getDimension(R.styleable.PercentageView_Radius, mRadius)
-            if (radius != null) {
-                mRadius = radius
-            }
-            val cricularBgColor =
-                obt?.getColor(R.styleable.PercentageView_CricularBgColor, mCricularBgColor)
-            if (cricularBgColor != null) {
-                mCricularBgColor = cricularBgColor
-            }
-
-            val leftValue = obt?.getFloat(R.styleable.PercentageView_LeftProgress, 0.00f)
-            if (leftValue != null) {
-                if (mLeftValue > 0f && mLeftValue <= 100f) {
-                    mLeftValue = leftValue
-                    mTotailValue = 100f - mLeftValue
+            obt?.getString(R.styleable.PercentageView_ProgressUnit)
+                ?.let {
+                    mProgressUnit = it
                 }
-            }
 
-            val rightValue = obt?.getFloat(R.styleable.PercentageView_RightProgress, 0.00f)
-            if (rightValue != null) {
-                mRightValue = rightValue
-            }
+            obt?.getColor(R.styleable.PercentageView_CenterLineColor, mLineColor)
+                ?.let {
+                    mLineColor = it
+                }
 
-            val padding = obt?.getDimension(R.styleable.PercentageView_textPadding, mPadding)
-            if (padding != null) {
-                mPadding = padding
-            }
 
-            val centerTextSize =
-                obt?.getDimension(R.styleable.PercentageView_CenterTextSize, mCenterTextSize)
-            if (centerTextSize != null) {
-                mCenterTextSize = centerTextSize
-            }
+            obt?.getBoolean(R.styleable.PercentageView_HaveLimiValue, mHaveLimitValue)
+                ?.let {
+                    mHaveLimitValue = it
+                }
 
-            val centerTextMany = obt?.getString(R.styleable.PercentageView_CenterTextMany)
-            if (centerTextMany != null) {
-                mCenterTextMany = centerTextMany
-            }
+            obt?.getColor(R.styleable.PercentageView_textLeftColor, mTextLeftColor)
+                ?.let {
+                    mTextLeftColor = it
+                }
 
-            val centerTextFew = obt?.getString(R.styleable.PercentageView_CenterTextFew)
-            if (centerTextFew != null) {
-                mCenterTextFew = centerTextFew
-            }
-            val centerText = obt?.getString(R.styleable.PercentageView_CenterText)
-            if (centerText != null) {
-                mCenterText = centerText
-            }
+            obt?.getColor(R.styleable.PercentageView_textRightColor, mTextRightColor)
+                ?.let {
+                    mTextRightColor = it
+                }
 
-            val centerTextManyColor =
-                obt?.getColor(R.styleable.PercentageView_CenterTextColorMany, mCenterTextManyColor)
-            if (centerTextManyColor != null) {
-                mCenterTextManyColor = centerTextManyColor
-            }
 
-            val centerTextFewColor =
-                obt?.getColor(R.styleable.PercentageView_CenterTextColorFew, mCenterTextFewColor)
-            if (centerTextFewColor != null) {
-                mCenterTextFewColor = centerTextFewColor
-            }
+            obt?.getDimension(R.styleable.PercentageView_android_textSize, mValueTextSize)
+                ?.let {
+                    mValueTextSize = it
+                }
 
-            val centerTextColor =
-                obt?.getColor(R.styleable.PercentageView_CenterTextColor, mCenterTextColor)
-            if (centerTextColor != null) {
-                mCenterTextColor = centerTextColor
-            }
 
-            val centerTextColorAlways = obt?.getColor(
+            obt?.getBoolean(R.styleable.PercentageView_ShowProgressText, mShowProgressText)
+                ?.let {
+                    mShowProgressText = it
+                }
+
+            obt?.getDimension(R.styleable.PercentageView_Radius, mRadius)
+                ?.let {
+                    mRadius = it
+                }
+
+            obt?.getColor(R.styleable.PercentageView_CricularBgColor, mCricularBgColor)
+                ?.let {
+                    mCricularBgColor = it
+                }
+
+            obt?.getFloat(R.styleable.PercentageView_LeftProgress, 0.00f)
+                ?.let {
+                    if (mLeftValue > 0f && mLeftValue <= 100f) {
+                        mLeftValue = it
+                        mTotailValue = 100f - mLeftValue
+                    }
+                }
+
+            obt?.getFloat(R.styleable.PercentageView_RightProgress, 0.00f)
+                ?.let {
+                    mRightValue = it
+                }
+
+            obt?.getDimension(R.styleable.PercentageView_textPadding, mPadding)
+                ?.let {
+                    mPadding = it
+                }
+
+
+            obt?.getDimension(R.styleable.PercentageView_CenterTextSize, mCenterTextSize)
+                ?.let {
+                    mCenterTextSize = it
+                }
+
+            obt?.getString(R.styleable.PercentageView_CenterTextMany)
+                ?.let {
+                    mCenterTextMany = it
+                }
+
+            obt?.getString(R.styleable.PercentageView_CenterTextFew)
+                ?.let {
+                    mCenterTextFew = it
+                }
+            obt?.getString(R.styleable.PercentageView_CenterText)
+                ?.let {
+                    mCenterText = it
+                }
+
+
+            obt?.getColor(R.styleable.PercentageView_CenterTextColorMany, mCenterTextManyColor)
+                ?.let {
+                    mCenterTextManyColor = it
+                }
+
+
+            obt?.getColor(R.styleable.PercentageView_CenterTextColorFew, mCenterTextFewColor)
+                ?.let {
+                    mCenterTextFewColor = it
+                }
+
+
+            obt?.getColor(R.styleable.PercentageView_CenterTextColor, mCenterTextColor)
+                ?.let {
+                    mCenterTextColor = it
+                }
+
+            obt?.getColor(
                 R.styleable.PercentageView_CenterTextColorAlways,
                 mCenterTextColorAlways
             )
-            if (centerTextColorAlways != null) {
-                mCenterTextColorAlways = centerTextColorAlways
-            }
+                ?.let {
+                    mCenterTextColorAlways = it
+                }
 
-            val leftProgressColor =
-                obt?.getColor(R.styleable.PercentageView_LeftProgressColor, mLeftColor)
-            if (leftProgressColor != null) {
-                mLeftColor = leftProgressColor
-            }
-            val rightProgressColor =
-                obt?.getColor(R.styleable.PercentageView_RightProgressColor, mRightColor)
-            if (rightProgressColor != null) {
-                mRightColor = rightProgressColor
-            }
+            obt?.getColor(R.styleable.PercentageView_LeftProgressColor, mLeftColor)
+                ?.let {
+                    mLeftColor = it
+                }
+
+            obt?.getColor(R.styleable.PercentageView_RightProgressColor, mRightColor)
+                ?.let {
+                    mRightColor = it
+                }
             obt?.recycle()
         }
         //图形画笔
@@ -414,6 +413,9 @@ class PercentageView : android.view.View {
                 }
 
                 if (mRadius > 0f) {
+
+                   if ( needDrawCenter()){
+
                     /**
                      * step5:绘制中间圆形背景
                      */
@@ -422,9 +424,21 @@ class PercentageView : android.view.View {
                      * step6:绘制圆上的字
                      */
                     drawCenterText(canvas)
-                }
+                }}
             }
         }
+    }
+
+    private fun needDrawCenter():Boolean{
+        getRadius()
+        if (mProgressRadius > 0 && !mHaveLimitValue) { //无极限值 越界情况
+            if ((mLeftValue/mTotailValue)*width < mRadius){
+                return false
+            }else if ((mLeftValue/mTotailValue)*width>(width-mRadius)){
+                return false
+            }
+        }
+        return true
     }
 
 
@@ -435,7 +449,7 @@ class PercentageView : android.view.View {
         var pathOne: Path? = PathFactory.createPath(
             FilletPath(
                 RectF(0f, 0f, width.toFloat(), height.toFloat()),
-                mPathChart,
+                Path(),
                 mProgressRadius,
                 mProgressRadius,
                 mProgressRadius,
@@ -453,19 +467,43 @@ class PercentageView : android.view.View {
         val pathTwo = PathFactory.createPath(
             FilletPath(
                 RectF(
-                    0f,
+                    -width * (mTotailValue - mLeftValue / mTotailValue),
                     0f,
                     width * (mLeftValue / mTotailValue),
                     height.toFloat()
-                ), mPathChart, mProgressRadius, mProgressRadius, mProgressRadius, mProgressRadius
+                ),
+                Path(),
+                mProgressRadius, mProgressRadius, mProgressRadius, mProgressRadius
             )
         )
         paintOne?.color = mLeftColor
         pathTwo?.let {
             paintOne?.let { it2 ->
-                canvas?.drawPath(it, it2)
+//                canvas?.drawPath(it, it2)
+
+                mRect.top = 0
+                mRect.left = 0
+                mRect.right = width
+                mRect.bottom = height
+                val region = Region(mRect)
+                val region2 = Region()
+                val region3 = Region()
+                region2.setPath(pathOne!!, region)
+                region3.setPath(it, region)
+                val op = region3.op(region2, Region.Op.INTERSECT)
+                //改变画笔颜色
+                if (op) {
+                    Log.i(TAG, "drawPureBar: 开始绘制纯净模式")
+                    val iterator = RegionIterator(region3)
+                    val rect = Rect()
+                    while (iterator.next(rect)) {
+                        canvas?.drawRect(rect, it2)
+                    }
+                }
             }
         }
+
+
     }
 
     //1:画分隔符
@@ -612,7 +650,12 @@ class PercentageView : android.view.View {
 
     //5：绘制中间圆形背景
     private fun drawCenterBg(canvas: Canvas?) {
+
         PaintFactory.createPaint(SolidPaint(mPaint, mCricularBgColor))?.let {
+
+
+
+
             canvas?.drawCircle(
                 width * mLeftValue / mTotailValue - abs(mTilt) / 2,
                 height / 2.toFloat(),
@@ -726,33 +769,34 @@ class PercentageView : android.view.View {
         return getCutPathByTilt()
     }
 
+    //通过重新设置进度值保证分割线有边界
     private fun resetLeftValue() {
-        var minProgressValue = if (mProgressRadius > 0) {
-            abs(mTilt) + mLineSize / 2 + height / 2
+
+        var minProgressValue =
+            if (mProgressRadius > 0) (abs(mTilt) + mLineSize / 2 + height / 2) else {
+                abs(mTilt) + mLineSize / 2
+            }
+
+        var rightReduce = if (mProgressRadius > 0) {
+            height / 2 + mLineSize / 2
         } else {
-            abs(mTilt) + mLineSize / 2
+            mLineSize / 2
         }
 
+        //右极限
         if (mLeftValue > mTotailValue / 2) {
             if ((width - width * (mLeftValue / mTotailValue)) <= minProgressValue) {
                 showRightText = false
-
-                if (mProgressRadius > 0) {
-                    mLeftTrueString = "$mLeftValue"
-                    mLeftValue = (width - (height / 2 + mLineSize / 2)) / width * mTotailValue
-                    mRightValue = mTotailValue - mLeftValue
-                    showRightText = false
-                } else {
-                    mLeftTrueString = ""
-                    showRightText = true
-                }
-                Log.i(TAG, "控件宽度：$width 最小宽度：$minProgressValue 当前总值：$mTotailValue")
-                Log.i(TAG, "resetLeftValue: 重置value值2：$mLeftValue")
-
+                mLeftTrueString = "$mLeftValue"
+                mLeftValue = (width - rightReduce) / width * mTotailValue
+                mRightValue = mTotailValue - mLeftValue
+                showRightText = false
             } else {
                 showRightText = true
             }
-        } else {
+        }
+        //左极限
+        else {
             if (width * (mLeftValue / mTotailValue) <= minProgressValue) {
                 mRightTrueString = "$mRightValue"
                 mLeftValue = (minProgressValue / width) * mTotailValue
@@ -905,10 +949,10 @@ class PercentageView : android.view.View {
         mLeftValue = s.toFloat()
 
         //mLeftValue = ((many * 100).roundToInt() / 100).toFloat() //如果要求精确4位就*10000然后/10000
-      //  mTotailValue = ((toTail * 100).roundToInt() / 100).toFloat()
+        //  mTotailValue = ((toTail * 100).roundToInt() / 100).toFloat()
         mTotailValue = ddf1.format(toTail).toFloat()
 
-        Log.e(TAG, "setData处理后的值: $s   $mTotailValue" )
+        Log.e(TAG, "setData处理后的值: $s   $mTotailValue")
 
         mRightValue = mTotailValue - mLeftValue
 

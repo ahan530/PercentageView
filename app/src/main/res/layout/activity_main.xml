@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/color_white"
     android:orientation="vertical"
-    android:paddingTop="@dimen/dp_10"
     android:scrollbars="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:scrollbarStyle="outsideInset">
 
 
     <LinearLayout
@@ -46,6 +46,14 @@
 
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView02"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            app:ProgressRadius="10dp"
+            app:ShowProgressText="false" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView03"
             android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
@@ -148,27 +156,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
-            android:text="4：圆角带切割线有文字"
+            android:text="4：圆角带切割线有文字,有，无极限值"
             android:textColor="@color/color_333333" />
 
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView4"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_10"
             app:CenterLineSize="10dp"
             app:CenterLineTilt="30"
             app:ProgressRadius="10dp"
-            android:layout_marginTop="@dimen/dp_10"
             app:ShowProgressText="true" />
 
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView41"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_10"
             app:CenterLineSize="10dp"
             app:CenterLineTilt="30"
             app:ProgressRadius="10dp"
-            android:layout_marginTop="@dimen/dp_10"
             app:ShowProgressText="true" />
 
 
@@ -176,11 +184,11 @@
             android:id="@+id/mPercentageView42"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_10"
             app:CenterLineSize="10dp"
             app:CenterLineTilt="30"
-            app:ProgressRadius="10dp"
             app:HaveLimiValue="true"
-            android:layout_marginTop="@dimen/dp_10"
+            app:ProgressRadius="10dp"
             app:ShowProgressText="true" />
 
 
@@ -188,8 +196,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
-            android:textColor="@color/color_333333"
-            android:text="5：直角带切割线有文字，有中间文字" />
+            android:text="5：直角带切割线有文字，有中间文字"
+            android:textColor="@color/color_333333" />
 
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView5"
@@ -203,6 +211,7 @@
             app:CenterTextSize="@dimen/sp_15"
             app:ProgressRadius="0dp"
             app:Radius="@dimen/dp_16" />
+
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView51"
             android:layout_width="@dimen/dp_200"
@@ -215,6 +224,7 @@
             app:CenterTextSize="@dimen/sp_15"
             app:ProgressRadius="0dp"
             app:Radius="@dimen/dp_16" />
+
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView52"
             android:layout_width="@dimen/dp_200"
@@ -240,6 +250,7 @@
             app:CenterTextSize="@dimen/sp_15"
             app:ProgressRadius="0dp"
             app:Radius="@dimen/dp_16" />
+
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView54"
             android:layout_width="@dimen/dp_200"
@@ -253,13 +264,38 @@
             app:ProgressRadius="0dp"
             app:Radius="@dimen/dp_16" />
 
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView55"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/color_white"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="-30"
+            app:CenterTextSize="@dimen/sp_15"
+            app:ProgressRadius="0dp"
+            app:Radius="@dimen/dp_16" />
 
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView56"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/color_white"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="-30"
+            app:CenterTextSize="@dimen/sp_15"
+            app:ProgressRadius="0dp"
+            app:Radius="@dimen/dp_16" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
-            android:text="6：圆角带切割线有文字，有中间文字" />
+            android:text="6：圆角切割线有文字，有中间文字,有极限值"
+            android:textColor="@color/color_333333" />
 
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView6"
@@ -274,18 +310,116 @@
             app:CenterTextColor="@color/color_e14c5b"
             app:CenterTextSize="@dimen/sp_8"
             app:CricularBgColor="@color/color_9cc4f5"
+            app:HaveLimiValue="true"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView61"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="-30"
+            app:CenterText="啊哈"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextSize="@dimen/sp_8"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:HaveLimiValue="true"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView62"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="-30"
+            app:CenterText="啊哈"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextSize="@dimen/sp_8"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:HaveLimiValue="true"
             app:ProgressRadius="10dp"
             app:Radius="@dimen/dp_16"
             app:textPadding="8dp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
-            android:text="7：圆角无切割线无文字，有中间文字" />
+            android:text="7：圆角无切割线无文字，有中间文字"
+            android:textColor="@color/color_333333" />
 
         <com.ywy.percentageview.PercentageView
-            android:id="@+id/mPercentageView7"
+            android:id="@+id/mPercentageView70"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="0dp"
+            app:CenterLineTilt="0"
+            app:CenterText="好"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextFew="少"
+            app:CenterTextMany="多"
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:ShowProgressText="false"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView700"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="0dp"
+            app:CenterLineTilt="0"
+            app:CenterText="好"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextFew="少"
+            app:CenterTextMany="多"
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:ShowProgressText="false"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView7000"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="0dp"
+            app:CenterLineTilt="0"
+            app:CenterText="好"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextFew="少"
+            app:CenterTextMany="多"
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:ShowProgressText="false"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView70000"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_10"
@@ -309,6 +443,27 @@
             android:id="@+id/mPercentageView71"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="0dp"
+            app:CenterLineTilt="60"
+            app:CenterText="好"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextColorAlways="@color/colorAccent"
+            app:CenterTextFew="少"
+            app:CenterTextMany="多"
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:ShowProgressText="false"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView711"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_10"
             android:textSize="@dimen/sp_15"
             app:CenterLineColor="@color/colorAccent"
@@ -327,7 +482,110 @@
             app:textPadding="8dp" />
 
         <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView7111"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="0dp"
+            app:CenterLineTilt="60"
+            app:CenterText="好"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextColorAlways="@color/colorAccent"
+            app:CenterTextFew="少"
+            app:CenterTextMany="多"
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:ShowProgressText="false"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView71111"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="0dp"
+            app:CenterLineTilt="-60"
+            app:CenterText="好"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextColorAlways="@color/colorAccent"
+            app:CenterTextFew="少"
+            app:CenterTextMany="多"
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:ShowProgressText="false"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView711111"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="0dp"
+            app:CenterLineTilt="-60"
+            app:CenterText="好"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextColorAlways="@color/colorAccent"
+            app:CenterTextFew="少"
+            app:CenterTextMany="多"
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:ShowProgressText="false"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView72"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:textSize="@dimen/sp_8"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="0dp"
+            app:CenterLineTilt="-80"
+            app:CenterText="平"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextFew="少"
+            app:CenterTextMany="多"
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:ShowProgressText="true"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView722"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_8"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="0dp"
+            app:CenterLineTilt="-80"
+            app:CenterText="平"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextFew="少"
+            app:CenterTextMany="多"
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:ShowProgressText="true"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView7222"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_10"
@@ -350,6 +608,46 @@
             android:id="@+id/mPercentageView73"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:textSize="@dimen/sp_8"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="2dp"
+            app:CenterLineTilt="0"
+            app:CenterText=""
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextFew=""
+            app:CenterTextMany=""
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/colorAccent"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_3"
+            app:ShowProgressText="true"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView733"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_8"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="2dp"
+            app:CenterLineTilt="0"
+            app:CenterText=""
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextFew=""
+            app:CenterTextMany=""
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/colorAccent"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_3"
+            app:ShowProgressText="true"
+            app:textPadding="8dp" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView7333"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_10"
             android:textSize="@dimen/sp_8"
             app:CenterLineColor="@color/colorAccent"
@@ -368,13 +666,40 @@
 
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
-            android:text="8：无限制带分割线无进度值" />
+            android:text="8：无限制带分割线无进度值"
+            android:textColor="@color/color_333333" />
 
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageView8"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            app:CenterLineColor="#2c9e67"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="60"
+            app:LeftProgress="55"
+            app:ProgressRadius="10dp"
+            app:RightProgress="45"
+            app:RightProgressColor="@color/color_333333" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView80"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            app:CenterLineColor="#2c9e67"
+            app:CenterLineSize="10dp"
+            app:CenterLineTilt="60"
+            app:LeftProgress="55"
+            app:ProgressRadius="10dp"
+            app:RightProgress="45"
+            app:RightProgressColor="@color/color_333333" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView800"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_10"
@@ -398,14 +723,63 @@
             app:ProgressRadius="10dp"
             app:RightProgress="45" />
 
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView811"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            app:CenterLineColor="#ffffff"
+            app:CenterLineSize="2dp"
+            app:CenterLineTilt="60"
+            app:LeftProgress="55"
+            app:ProgressRadius="10dp"
+            app:RightProgress="45" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView8111"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            app:CenterLineColor="#ffffff"
+            app:CenterLineSize="2dp"
+            app:CenterLineTilt="60"
+            app:LeftProgress="55"
+            app:ProgressRadius="10dp"
+            app:RightProgress="45" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView81111"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            app:CenterLineColor="#ffffff"
+            app:CenterLineSize="2dp"
+            app:CenterLineTilt="60"
+            app:LeftProgress="55"
+            app:ProgressRadius="10dp"
+            app:RightProgress="45" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView811111"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            app:CenterLineColor="#ffffff"
+            app:CenterLineSize="2dp"
+            app:CenterLineTilt="60"
+            app:LeftProgress="55"
+            app:ProgressRadius="10dp"
+            app:RightProgress="45" />
+
 
         <LinearLayout
             android:id="@+id/emptyView"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/dp_20"
-            android:layout_gravity="center_horizontal"
             android:layout_width="@dimen/dp_100"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:orientation="vertical" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
