@@ -328,18 +328,18 @@ class PercentageView : android.view.View {
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
         val heightSize = MeasureSpec.getSize(heightMeasureSpec)
 
-        Log.e(TAG, "宽: $widthSize 高：$heightSize")
+       // Log.e(TAG, "宽: $widthSize 高：$heightSize")
 
         when (widthMode) {
             MeasureSpec.EXACTLY -> { //父容器已经为子容器设置了尺寸,子容器应当服从这些边界,不论子容器想要多大的空间.
                 when (heightMode) {
                     MeasureSpec.EXACTLY -> {
                         setMeasuredDimension(widthSize, heightSize)
-                        Log.e(TAG + "宽高一定", "宽: $widthSize 高：$heightSize")
+                     //   Log.e(TAG + "宽高一定", "宽: $widthSize 高：$heightSize")
                     }
                     MeasureSpec.AT_MOST, MeasureSpec.UNSPECIFIED -> {
                         setMeasuredDimension(widthSize, mMinHeight.toInt())
-                        Log.e(TAG + "宽一定,高不定", "宽: $widthSize 高：$mMinHeight")
+                      //  Log.e(TAG + "宽一定,高不定", "宽: $widthSize 高：$mMinHeight")
                     }
                 }
             }
@@ -347,12 +347,12 @@ class PercentageView : android.view.View {
                 when (heightMode) {
                     MeasureSpec.EXACTLY -> {
                         setMeasuredDimension(mMinWidth.toInt(), heightSize)
-                        Log.e(TAG + "宽wrap高一定", "宽: $mMinWidth 高：$heightSize")
+//                        Log.e(TAG + "宽wrap高一定", "宽: $mMinWidth 高：$heightSize")
 
                     }
                     MeasureSpec.AT_MOST, MeasureSpec.UNSPECIFIED -> {
                         setMeasuredDimension(mMinWidth.toInt(), mMinHeight.toInt())
-                        Log.e(TAG + "宽高均wrap", "宽: $mMinWidth 高：$mMinHeight")
+//                        Log.e(TAG + "宽高均wrap", "宽: $mMinWidth 高：$mMinHeight")
                     }
                 }
             }
@@ -494,7 +494,7 @@ class PercentageView : android.view.View {
                 val op = region3.op(region2, Region.Op.INTERSECT)
                 //改变画笔颜色
                 if (op) {
-                    Log.i(TAG, "drawPureBar: 开始绘制纯净模式")
+//                    Log.i(TAG, "drawPureBar: 开始绘制纯净模式")
                     val iterator = RegionIterator(region3)
                     val rect = Rect()
                     while (iterator.next(rect)) {
@@ -548,7 +548,7 @@ class PercentageView : android.view.View {
 
     //2-3：绘制圆角无分割线进度条
     private fun drawCornerProgress(canvas: Canvas?) {
-        Log.i(TAG, "onDraw: 有圆角")
+//        Log.i(TAG, "onDraw: 有圆角")
         //获取第一层path
         var pathOne: Path? = PathFactory.createPath(
             FilletPath(
@@ -598,7 +598,7 @@ class PercentageView : android.view.View {
                     val op2 = region4.op(region2, Region.Op.INTERSECT)
                     paintOne.color = mLineColor
 
-                    Log.i(TAG2, "onDraw: 绘制分割线$op2")
+//                    Log.i(TAG2, "onDraw: 绘制分割线$op2")
                     if (op2) {
                         val iterator = RegionIterator(region4)
                         val rect = Rect()
@@ -625,7 +625,7 @@ class PercentageView : android.view.View {
                 val fontMetrics = it.fontMetrics   //文字高度相关的信息都存在FontMetrics对象中
                 val y: Float =
                     (height) / 2 + (abs(fontMetrics!!.ascent) - fontMetrics!!.descent) / 2 //|ascent|=descent+ 2 * ( 2号线和3号线之间的距离 )
-                Log.i(TAG, "左边onDraw:绘制内容： $valueString")
+//                Log.i(TAG, "左边onDraw:绘制内容： $valueString")
                 //绘制
                 canvas?.drawText(
                     valueString, 0f + mPadding, y, it
@@ -803,7 +803,7 @@ class PercentageView : android.view.View {
                 mLeftValue = (minProgressValue / width) * mTotailValue
                 mRightValue = mTotailValue - mLeftValue
                 showLeftText = false
-                Log.i(TAG, "resetLeftValue: 重置value值1：$mLeftValue")
+//                Log.i(TAG, "resetLeftValue: 重置value值1：$mLeftValue")
             } else {
                 mRightTrueString = ""
                 showLeftText = true
@@ -936,7 +936,7 @@ class PercentageView : android.view.View {
             mRightValue *= 100
         }
 
-        Log.i(TAG, "setData: 左边值：$mLeftValue 右边值：$mRightValue 总值：$mTotailValue")
+//        Log.i(TAG, "setData: 左边值：$mLeftValue 右边值：$mRightValue 总值：$mTotailValue")
     }
 
     //设置数据
@@ -953,7 +953,7 @@ class PercentageView : android.view.View {
         //  mTotailValue = ((toTail * 100).roundToInt() / 100).toFloat()
         mTotailValue = ddf1.format(toTail).toFloat()
 
-        Log.e(TAG, "setData处理后的值: $s   $mTotailValue")
+//        Log.e(TAG, "setData处理后的值: $s   $mTotailValue")
 
         mRightValue = mTotailValue - mLeftValue
 
