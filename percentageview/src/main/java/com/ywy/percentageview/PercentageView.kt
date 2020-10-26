@@ -642,6 +642,7 @@ class PercentageView : android.view.View {
                 val stringWidth = it.measureText(valueString)
                 val x = (width - stringWidth - mPadding)
                 val fontMetrics = it.fontMetrics
+                it.color = mTextRightColor
                 val y: Float =
                     (height) / 2 + (abs(fontMetrics!!.ascent) - fontMetrics!!.descent) / 2 //|ascent|=descent+ 2 * ( 2号线和3号线之间的距离 )
                 canvas?.drawText(valueString, x, y, it)
