@@ -772,6 +772,12 @@
             app:RightProgress="45" />
 
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="9：使用代码添加,父布局约束宽高"
+            android:textColor="@color/color_333333" />
         <LinearLayout
             android:id="@+id/emptyView"
             android:layout_width="@dimen/dp_100"
@@ -780,6 +786,60 @@
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginBottom="@dimen/dp_20"
             android:orientation="vertical" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="10：无限制带分割线有进度值有前单位"
+            android:textColor="@color/color_333333" />
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView10"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_10"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="0dp"
+            app:CenterLineTilt="0"
+            app:CenterText="好"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextFew="少"
+            app:CenterTextMany="多"
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:ShowProgressText="true"
+            app:ShowLeftBeforeUnit="true"
+            app:ShowRightBeforeUnit="true"
+            app:textPadding="8dp"
+            android:layout_marginBottom="@dimen/dp_20"/>
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageView108"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_10"
+            app:CenterLineColor="@color/colorAccent"
+            app:CenterLineSize="0dp"
+            app:CenterLineTilt="0"
+            app:CenterText="好"
+            app:CenterTextColor="@color/color_e14c5b"
+            app:CenterTextFew="少"
+            app:CenterTextMany="多"
+            app:CenterTextSize="@dimen/sp_10"
+            app:CricularBgColor="@color/color_9cc4f5"
+            app:ProgressRadius="10dp"
+            app:Radius="@dimen/dp_16"
+            app:ShowProgressText="true"
+            app:ShowLeftBeforeUnit="true"
+            app:ShowRightBeforeUnit="true"
+            app:textPadding="8dp"
+            app:TopBottomPadding="@dimen/dp_2"
+            android:layout_marginBottom="@dimen/dp_20"/>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

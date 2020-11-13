@@ -146,5 +146,9 @@ class MainActivity : AppCompatActivity() {
             .build()
         emptyView.addView(build)
 
+        //10.无限制带分割线有进度值有前单位
+        mPercentageView10.setData(55f,100f)
+
+        mPercentageView108.setData(55f,100f)
     }
 }

@@ -21,6 +21,8 @@
         <attr name="textRightColor" format="color" />
         <!--显示条高度-->
         <attr name="ProgressMinHeight" format="dimension"/>
+        <!--设置间距中间圆形会变大-->
+        <attr name="TopBottomPadding" format="dimension"/>
         <!--进度单位，默认%-->
         <attr name="ProgressUnit" format="string"/>
         <!--进度条左右圆角弧度-->
@@ -29,6 +31,10 @@
         <attr name="ProgressMinWidth" format="dimension"/>
         <!--是否显示左右进度文字-->
         <attr name="ShowProgressText" format="boolean"/>
+        <!--是否显示左边前单位-->
+        <attr name="ShowLeftBeforeUnit" format="boolean"/>
+        <!--是否显示右边前单位-->
+        <attr name="ShowRightBeforeUnit" format="boolean"/>
         <!--显示圆形半径-->
         <attr name="Radius" format="dimension"/>
         <!--显示圆形背景色-->
