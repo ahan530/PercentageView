@@ -61,12 +61,10 @@ class MainActivity : AppCompatActivity() {
         //1.1：极限值
         mPercentageView11.setData(3f,100f)
 
-
-
         //2:圆角无切割线
-        mPercentageView2.setData(43.3f,100f)
+        mPercentageView2.setData(66.44f,100f)
         //2.1:圆角无切线极限值
-        mPercentageView21.setData(3f,100f)
+        mPercentageView21.setData(77.48f,100f)
 
 
         //3：圆角带切割线无文字
@@ -113,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         mPercentageView7000.setData(100f,100f)
         mPercentageView70000.setData(8f,100f)
 
-        mPercentageView71.setData(40.3f,100f)
+        mPercentageView71.setData(66.44f,100f)
         mPercentageView711.setData(0f,100f)
         mPercentageView7111.setData(100f,100f)
         mPercentageView71111.setData(0f,100f)

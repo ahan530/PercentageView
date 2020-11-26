@@ -968,21 +968,15 @@ class PercentageView : android.view.View {
 
     //设置数据
     fun setData(many: Float, toTail: Float) {
-
-
         val ddf1: NumberFormat = NumberFormat.getNumberInstance()
-
         ddf1.maximumFractionDigits = 2
         val s: String = ddf1.format(many)
         mLeftValue = s.toFloat()
 
-        //mLeftValue = ((many * 100).roundToInt() / 100).toFloat() //如果要求精确4位就*10000然后/10000
-        //  mTotailValue = ((toTail * 100).roundToInt() / 100).toFloat()
         mTotailValue = ddf1.format(toTail).toFloat()
 
-//        Log.e(TAG, "setData处理后的值: $s   $mTotailValue")
+        mRightValue =  ddf1.format(mTotailValue - mLeftValue).toFloat()
 
-        mRightValue = mTotailValue - mLeftValue
 
         if (toTail <= 1) {
             mLeftValue *= 100
