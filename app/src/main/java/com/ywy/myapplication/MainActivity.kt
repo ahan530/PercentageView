@@ -3,6 +3,7 @@ package com.ywy.myapplication
 import android.animation.ValueAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import com.ywy.percentageview.PercentageView
 import com.ywy.percentageview.PercentageViewBuilder
 import kotlinx.android.synthetic.main.activity_main.*
@@ -148,5 +149,12 @@ class MainActivity : AppCompatActivity() {
         mPercentageView10.setData(55f,100f)
 
         mPercentageView108.setData(55f,100f)
+
+var dealFloatPercentageNumber = 100f
+        mPercentageViewx.setData(dealFloatPercentageNumber,100f)
+        if (dealFloatPercentageNumber in 50.0..100.0){
+            mPercentageViewx.mCricularBgColor = ContextCompat.getColor(this,R.color.color_f75251) }else{
+            mPercentageViewx.mCricularBgColor = ContextCompat.getColor(this,R.color.color_02b36c)
+        }
     }
 }

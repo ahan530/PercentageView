@@ -177,7 +177,8 @@
             app:CenterLineSize="10dp"
             app:CenterLineTilt="30"
             app:ProgressRadius="10dp"
-            app:ShowProgressText="true" />
+            app:ShowProgressText="true"
+            app:CenterBgAllwaysShow="true"/>
 
 
         <com.ywy.percentageview.PercentageView
@@ -189,7 +190,8 @@
             app:CenterLineTilt="30"
             app:HaveLimiValue="true"
             app:ProgressRadius="10dp"
-            app:ShowProgressText="true" />
+            app:ShowProgressText="true"
+            app:CenterBgAllwaysShow="true"/>
 
 
         <TextView
@@ -840,6 +842,30 @@
             app:textPadding="8dp"
             app:TopBottomPadding="@dimen/dp_2"
             android:layout_marginBottom="@dimen/dp_20"/>
+
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPercentageViewx"
+            android:layout_marginBottom="@dimen/dp_40"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="26dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/sp_15"
+            android:layout_marginLeft="4dp"
+            app:CenterTextSize="16sp"
+            app:textPadding="6dp"
+            app:ProgressRadius="10dp"
+            app:CenterBgAllwaysShow="true"
+            app:TopBottomPadding="@dimen/dp_3"
+            app:CenterLineSize="4dp"
+            app:Radius="16dp"
+            app:textLeftColor="#f75251"
+            app:textRightColor="#02b36c"
+            app:LeftProgressColor="#fedcdb"
+            app:RightProgressColor="#ccf0e2"
+            app:CenterTextColorAlways="@color/color_white"
+            android:layout_marginStart="4dp" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

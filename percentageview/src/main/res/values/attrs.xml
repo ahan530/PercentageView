@@ -53,6 +53,10 @@
         <attr name="CenterTextColorFew" format="color"/>
         <!--中间字体颜色-左右值相等-->
         <attr name="CenterTextColor" format="color"/>
+        <!--中间背景颜色-左右值相等-->
+        <attr name="CenterValuesameBgColor" format="color"/>
+       <!--中间背景是否一直完全显示-->
+        <attr name="CenterBgAllwaysShow" format="boolean"/>
         <!--忽略值变化的中间字体颜色-->
         <attr name="CenterTextColorAlways" format="color"/>
         <!--中间圆圈颜色背景-->

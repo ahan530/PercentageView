@@ -11,10 +11,9 @@ import com.ywy.percentageview.paths.FilletPath
 import com.ywy.percentageview.paths.PathFactory
 import com.ywy.percentageview.paths.PoinEntity
 import com.ywy.percentageview.paths.RectanglePath
-import java.math.BigDecimal
 import java.text.NumberFormat
 import kotlin.math.abs
-import kotlin.math.roundToInt
+
 
 /**
  * CreateTime:2020/8/12
@@ -157,8 +156,14 @@ class PercentageView : android.view.View {
     //中间字体颜色(不变)
     var mCenterTextColorAlways = 0
 
-    //左右值持平时字体颜色 默认橙色
+    //左右值持平时字体颜色 默认橙色 如果mCenterTextColorAlways有色值 则字体颜色为mCenterTextColorAlways
     var mCenterTextColor = Color.parseColor("#fd7f3e")
+
+    //如果是平则中间颜色为 默认蓝色
+    var mCenterValuesameBgColor = Color.parseColor("#3b8ced")
+
+    //中间文字背景是否一直完全显示
+    var mCenterBgAllwayShow = false
 
     //重置进度值,使分隔线宽度>0时可以显示完全
     private var mLeftTrueString = ""
@@ -312,6 +317,17 @@ class PercentageView : android.view.View {
                     mCenterTextColor = it
                 }
 
+            obt?.getColor(R.styleable.PercentageView_CenterValuesameBgColor, mCenterValuesameBgColor)
+                ?.let {
+                    mCenterValuesameBgColor = it
+                }
+
+            obt?.getBoolean(R.styleable.PercentageView_CenterBgAllwaysShow, mCenterBgAllwayShow)
+                ?.let {
+                    mCenterBgAllwayShow = it
+                }
+
+
             obt?.getColor(
                 R.styleable.PercentageView_CenterTextColorAlways,
                 mCenterTextColorAlways
@@ -457,6 +473,8 @@ class PercentageView : android.view.View {
     private fun needDrawCenter(): Boolean {
         getRadius()
         if (mProgressRadius > 0 && !mHaveLimitValue) { //无极限值 越界情况
+            if (mCenterBgAllwayShow)return true //如果是需要展示则直接返回ture
+
             if ((mLeftValue / mTotailValue) * width < mRadius) {
                 return false
             } else if ((mLeftValue / mTotailValue) * width > (width - mRadius)) {
@@ -652,7 +670,7 @@ class PercentageView : android.view.View {
             //绘制左边进度文字
             if (showLeftText) {
                 val valueString = if (mLeftTrueString.isNotEmpty()) {
-               if(showLeftBeforeUnit){mCenterTextMany}else{""}  +   mLeftTrueString + "${this.mProgressUnit}"
+               if(showLeftBeforeUnit){mCenterTextMany}else{""}  +   mLeftTrueString + this.mProgressUnit
                 } else {
                     if(showLeftBeforeUnit){mCenterTextMany}else{""} +      "${this.mLeftValue}$mProgressUnit"
                 }
@@ -685,11 +703,29 @@ class PercentageView : android.view.View {
 
     //5：绘制中间圆形背景
     private fun drawCenterBg(canvas: Canvas?) {
-        PaintFactory.createPaint(SolidPaint(mPaint, mCricularBgColor))?.let {
+        Log.i(TAG, "drawCenterBg: 画背景")
+        val bgColor = if (mLeftValue == 50f){
+            mCenterValuesameBgColor
+        }else{
+            mCricularBgColor
+        }
+        PaintFactory.createPaint(SolidPaint(mPaint, bgColor))?.let {
+            val radius = getRadius()
+
+            //中间圆形背景完全显示
+            var centerX = width * mLeftValue / mTotailValue - abs(mTilt) / 2
+
+            if (mCenterBgAllwayShow){
+                if (centerX<radius){
+                    centerX = radius
+                } else if ((width * mRightValue/mTotailValue)<radius){
+                    centerX = width -radius
+                }
+            }
             canvas?.drawCircle(
-                width * mLeftValue / mTotailValue - abs(mTilt) / 2,
+                centerX,
                 height / 2.toFloat(),
-                getRadius(),
+                radius,
                 it
             )
         }
@@ -700,7 +736,18 @@ class PercentageView : android.view.View {
         //画圆中间的字
         getPaintCenterText()?.let {
             val stringWidth = it.measureText(mCenterText)
-            val x = (width * mLeftValue / mTotailValue) - abs(mTilt) / 2 - stringWidth / 2
+
+            var  centerX=  (width * mLeftValue / mTotailValue) - abs(mTilt) / 2
+            //极限值处理
+            if (mCenterBgAllwayShow){
+                val radius = getRadius()
+                if (centerX<radius){
+                    centerX = radius
+                } else if ((width * mRightValue/mTotailValue)<radius){
+                    centerX = width -radius
+                }
+            }
+            val x =centerX - stringWidth / 2
             val fontMetrics = it.fontMetrics
             val y: Float =
                 (height) / 2 + (abs(fontMetrics.ascent) - fontMetrics.descent) / 2 //|ascent|=descent+ 2 * ( 2号线和3号线之间的距离 )
