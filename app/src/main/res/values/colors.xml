@@ -6,4 +6,107 @@
     <color name="color_white">#ffffff</color>
     <color name="color_f75251">#f75251</color>
     <color name="color_02b36c">#02b36c</color>
+
+    <!--主题色-->
+    <color name="color_theme">#333b46</color>
+    <!--用于分割线-->
+    <color name="color_line">#f4f6f5</color>
+    <!--用于页面背景-->
+    <color name="color_bg">#ffffff</color>
+    <!--用于价格-->
+    <color name="color_price_red">#f75251</color>
+    <!--用于价格-->
+    <color name="color_price_green">#03b36d</color>
+    <!--透明色-->
+    <color name="color_transparent">#00000000</color>
+    <!--一级标题颜色-->
+    <color name="color_menu">#222b33</color>
+    <!--副标题颜色-->
+    <color name="color_submenu">#444444</color>
+    <!--正文颜色-->
+    <color name="color_content">#374046</color>
+    <!--副文颜色（二级正文）-->
+    <color name="color_subcontent">#555555</color>
+    <!--解释性内容文字（三级正文）-->
+    <color name="color_content3">#666666</color>
+
+    <!--基础色-->
+    <color name="color_black">#000000</color>
+    <color name="color_red">#ff0000</color>
+    <color name="color_green">#2c9e67</color>
+    <color name="color_blue">#5498f0</color>
+    <color name="color_orange">#ff9249</color>
+    <color name="color_yellow">#ffcc60</color>
+    <color name="color_dialog_bg">#22000000</color>
+
+
+    <color name="color_333333">#333333</color>
+    <color name="color_555555">#555555</color>
+    <color name="color_666666">#666666</color>
+    <color name="color_aaaaaa">#aaaaaa</color>
+    <color name="color_f8fafb">#f8fafb</color>
+    <color name="color_2c9e67">#2c9e67</color>
+    <color name="color_5498f0">#5498f0</color>
+    <color name="color_e14c5b">#e14c5b</color>
+
+    <color name="color_e7ebee">#e7ebee</color>
+    <color name="color_eeeeee">#eeeeee</color>
+    <color name="color_00eeeeee">#a2eeeeee</color>
+    <color name="color_11333b46">#cc333b46</color>
+    <color name="color_dddddd">#dddddd</color>
+    <color name="color_f4f8fe">#f4f8fe</color>
+    <color name="color_9cc4f5">#9cc4f5</color>
+    <color name="color_3b8ced">#3b8ced</color>
+    <color name="color_5edbeb">#5edbeb</color>
+    <color name="color_fecca9">#fecca9</color>
+    <color name="color_fffefc">#fffefc</color>
+    <color name="color_2a3558">#2a3558</color>
+    <color name="color_41c3a4">#41c3a4</color>
+    <color name="color_eb6e90">#eb6e90</color>
+    <color name="color_aeb6ff">#aeb6ff</color>
+    <color name="color_fdfdff">#fdfdff</color>
+    <color name="color_f7f8fa">#f7f8fa</color>
+    <color name="color_bbbbbb">#bbbbbb</color>
+    <color name="color_5e9beb">#5e9beb</color>
+    <color name="color_92e6f1">#92e6f1</color>
+    <color name="color_eea497">#eea497</color>
+    <color name="color_a2aabb">#a2aabb</color>
+    <color name="color_f7f8fc">#f7f8fc</color>
+    <color name="color_eef1f6">#eef1f6</color>
+    <color name="color_fefefe">#fefefe</color>
+    <color name="color_ff9249">#ff9249</color>
+    <color name="color_fef4eb">#fef4eb</color>
+    <color name="color_eeeffd">#eeeffd</color>
+    <color name="color_cbc8e3">#cbc8e3</color>
+    <color name="color_fb9a59">#fb9a59</color>
+    <color name="color_ff0000">#ff0000</color>
+    <color name="color_222222">#222222</color>
+    <color name="color_9d23c3">#9d23c3</color>
+    <color name="color_f5f6f8">#f5f6f8</color>
+    <color name="color_09b26c">#09b26c</color>
+    <color name="color_f55353">#f55353</color>
+    <color name="color_d848a">#7d848a</color>
+    <color name="color_df5858">#df5858</color>
+    <color name="color_222b32">#222b32</color>
+    <color name="color_f39b77">#f39b77</color>
+    <color name="color_f29c9f">#f29c9f</color>
+    <color name="color_e16a6b">#e16a6b</color>
+    <color name="color_7b8084">#7b8084</color>
+    <color name="color_f65051">#f65051</color>
+    <color name="color_fcf2f1">#fcf2f1</color>
+    <color name="color_03b36d">#03b36d</color>
+    <color name="color_fedcdb">#fedcdb</color>
+    <color name="color_ccf0e2">#ccf0e2</color>
+    <color name="color_f1bf76">#f1bf76</color>
+    <color name="color_f29ec2">#f29ec2</color>
+    <color name="color_f4f4f6">#f4f4f6</color>
+
+
+    <color name="color_chi">#FF0000</color>
+    <color name="color_cheng">#FF7F00</color>
+    <color name="color_huang">#FFFF00 </color>
+    <color name="color_lv">#00FF00</color>
+    <color name="color_qing">#00FFFF</color>
+    <color name="color_lan">#0000FF</color>
+    <color name="color_zi">#8B00FF</color>
 </resources>

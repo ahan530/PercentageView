@@ -23,7 +23,7 @@ class SolidPaint : BasePaint{
 
     private fun initPaint() {
         paint?.let {
-            color?.let {it2->
+            color.let { it2->
                 it.style = Paint.Style.FILL //画笔样式
                 it.isAntiAlias = true //抗锯齿
                 it.color = it2

@@ -20,14 +20,14 @@ class TextPaint :BasePaint{
         initPaint()
     }
 
-    constructor(paint: Paint?, textSize:Float){
-        this.paint = paint
-        this.paint?.reset()
-        this.textSize = textSize
-
-        setDefaultPaint()
-        initPaint()
-    }
+//    constructor(paint: Paint?, textSize:Float){
+//        this.paint = paint
+//        this.paint?.reset()
+//        this.textSize = textSize
+//
+//        setDefaultPaint()
+//        initPaint()
+//    }
 
     constructor(paint: Paint?, textSize:Float,widthPaint:Float){
         this.paint = paint
@@ -39,39 +39,39 @@ class TextPaint :BasePaint{
         initPaint()
     }
 
-    constructor(paint: Paint?, color:Int){
-        this.paint = paint
-        this.color = color
-        this.textSize = textSize
-        initPaint()
-    }
+//    constructor(paint: Paint?, color:Int){
+//        this.paint = paint
+//        this.color = color
+//        this.textSize = textSize
+//        initPaint()
+//    }
 
-    constructor(color:Int,textSize:Float){
-        this.paint = Paint()
-        this.color = color
-        this.textSize = textSize
+//    constructor(color:Int,textSize:Float){
+//        this.paint = Paint()
+//        this.color = color
+//        this.textSize = textSize
+//
+//        setDefaultPaint()
+//        initPaint()
+//    }
 
-        setDefaultPaint()
-        initPaint()
-    }
+//    constructor(color:Int,textSize:Float,widthPaint:Float){
+//        this.paint = Paint()
+//        this.color = color
+//        this.textSize = textSize
+//        this.widthPaint = widthPaint
+//
+//        setDefaultPaint()
+//        initPaint()
+//    }
 
-    constructor(color:Int,textSize:Float,widthPaint:Float){
-        this.paint = Paint()
-        this.color = color
-        this.textSize = textSize
-        this.widthPaint = widthPaint
-
-        setDefaultPaint()
-        initPaint()
-    }
-
-    constructor(color:Int){
-        this.paint = Paint()
-        this.color = color
-
-        setDefaultPaint()
-        initPaint()
-    }
+//    constructor(color:Int){
+//        this.paint = Paint()
+//        this.color = color
+//
+//        setDefaultPaint()
+//        initPaint()
+//    }
 
     private fun setDefaultPaint() {
         paint?.style = Paint.Style.FILL //画笔样式
@@ -87,7 +87,7 @@ class TextPaint :BasePaint{
             it.textSize = textSize
             it.strokeWidth = widthPaint
             it.isAntiAlias = true
-            color?.let {it2->
+            color.let { it2->
                 it.color = it2
             }
         }
