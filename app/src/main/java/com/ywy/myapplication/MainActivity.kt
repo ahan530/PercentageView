@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
          */
         //1:有进度值，加个属性动画，从0开始不好看
         mPercentageView0.setType(PercentageView.Type.PURE)
+
         val ofFloat0 = ValueAnimator.ofFloat(10f, 75f)
         ofFloat0.duration = 3000
         ofFloat0.repeatCount = 0
@@ -77,7 +78,18 @@ class MainActivity : AppCompatActivity() {
 
 
         //4：圆角切割线有文字
-        mPercentageView4.setData(45.6f,100f)
+//        mPercentageView4.setData(45.6f,100f)
+
+        val ofFloat01 = ValueAnimator.ofFloat(0f, 45.6f)
+        ofFloat01.duration = 3000
+        ofFloat01.repeatCount = 0
+        ofFloat01.addUpdateListener {
+            val animatedValue = it.animatedValue as Float
+            mPercentageView4.setData(animatedValue,100f)
+            mPercentageView4.invaLidate()
+        }
+        ofFloat01.start()
+
         //4.1:左极值
         mPercentageView41.setData(0f,100f)
         //4.2：左极值（是否有极值-true）HaveLimiValue = true 则百分比进度值显示区域不够 自动隐藏

@@ -649,7 +649,7 @@ class PercentageView : android.view.View {
                     region4.setPath(it, region)
                     val op2 = region4.op(region2, Region.Op.INTERSECT)
                     paintOne.color = mLineColor
-
+                    paintOne.isAntiAlias = true
 //                    Log.i(TAG2, "onDraw: 绘制分割线$op2")
                     if (op2) {
                         val iterator = RegionIterator(region4)
