@@ -11,8 +11,11 @@ import com.ywy.percentageview.paths.FilletPath
 import com.ywy.percentageview.paths.PathFactory
 import com.ywy.percentageview.paths.PoinEntity
 import com.ywy.percentageview.paths.RectanglePath
+import com.ywy.percentageview.utils.NumberUtils
+import java.math.BigDecimal
 import java.text.NumberFormat
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 
 /**
@@ -317,7 +320,10 @@ class PercentageView : android.view.View {
                     mCenterTextColor = it
                 }
 
-            obt?.getColor(R.styleable.PercentageView_CenterValuesameBgColor, mCenterValuesameBgColor)
+            obt?.getColor(
+                R.styleable.PercentageView_CenterValuesameBgColor,
+                mCenterValuesameBgColor
+            )
                 ?.let {
                     mCenterValuesameBgColor = it
                 }
@@ -473,7 +479,7 @@ class PercentageView : android.view.View {
     private fun needDrawCenter(): Boolean {
         getRadius()
         if (mProgressRadius > 0 && !mHaveLimitValue) { //无极限值 越界情况
-            if (mCenterBgAllwayShow)return true //如果是需要展示则直接返回ture
+            if (mCenterBgAllwayShow) return true //如果是需要展示则直接返回ture
 
             if ((mLeftValue / mTotailValue) * width < mRadius) {
                 return false
@@ -520,32 +526,33 @@ class PercentageView : android.view.View {
             )
         )
         paintOne?.color = mLeftColor
-        pathOne?.let { pathO->
-        pathTwo?.let {
-            paintOne?.let { it2 ->
+        pathOne?.let { pathO ->
+            pathTwo?.let {
+                paintOne?.let { it2 ->
 //                canvas?.drawPath(it, it2)
 
-                mRect.top = 0
-                mRect.left = 0
-                mRect.right = width
-                mRect.bottom = height
-                val region = Region(mRect)
-                val region2 = Region()
-                val region3 = Region()
-                region2.setPath(pathO, region)
-                region3.setPath(it, region)
-                val op = region3.op(region2, Region.Op.INTERSECT)
-                //改变画笔颜色
-                if (op) {
+                    mRect.top = 0
+                    mRect.left = 0
+                    mRect.right = width
+                    mRect.bottom = height
+                    val region = Region(mRect)
+                    val region2 = Region()
+                    val region3 = Region()
+                    region2.setPath(pathO, region)
+                    region3.setPath(it, region)
+                    val op = region3.op(region2, Region.Op.INTERSECT)
+                    //改变画笔颜色
+                    if (op) {
 //                    Log.i(TAG, "drawPureBar: 开始绘制纯净模式")
-                    val iterator = RegionIterator(region3)
-                    val rect = Rect()
-                    while (iterator.next(rect)) {
-                        canvas?.drawRect(rect, it2)
+                        val iterator = RegionIterator(region3)
+                        val rect = Rect()
+                        while (iterator.next(rect)) {
+                            canvas?.drawRect(rect, it2)
+                        }
                     }
                 }
             }
-        }}
+        }
 
 
     }
@@ -586,7 +593,7 @@ class PercentageView : android.view.View {
         val pathRight = getRadiusRightPath(mProgressRadius)
         //右边画笔
         PaintFactory.createPaint(SolidPaint(mPaint, mRightColor))?.let {
-            pathRight?.let {pathH->
+            pathRight?.let { pathH ->
                 canvas?.drawPath(pathH, it)
             }
 
@@ -600,7 +607,12 @@ class PercentageView : android.view.View {
         //获取第一层path
         val pathOne: Path? = PathFactory.createPath(
             FilletPath(
-                RectF(0f, 0f+mTopBottomPadding, width.toFloat(), height.toFloat()-mTopBottomPadding),
+                RectF(
+                    0f,
+                    0f + mTopBottomPadding,
+                    width.toFloat(),
+                    height.toFloat() - mTopBottomPadding
+                ),
                 mPathChart,
                 mProgressRadius,
                 mProgressRadius,
@@ -614,14 +626,15 @@ class PercentageView : android.view.View {
         //获取第二层path
         if (paintOne != null && pathOne != null) {
             //现将第一层画出
+            paintOne.isAntiAlias = true
             canvas?.drawPath(pathOne, paintOne)
             //获取第二层path
             val pathTwo: Path? = getSecoundPath()
             //将路径一和二去交集作为二层涂层
-            mRect.top = 0+mTopBottomPadding.toInt()
+            mRect.top = 0 + mTopBottomPadding.toInt()
             mRect.left = 0
             mRect.right = width
-            mRect.bottom = height-mTopBottomPadding.toInt()
+            mRect.bottom = height - mTopBottomPadding.toInt()
             val region = Region(mRect)
             val region2 = Region()
             val region3 = Region()
@@ -649,12 +662,13 @@ class PercentageView : android.view.View {
                     region4.setPath(it, region)
                     val op2 = region4.op(region2, Region.Op.INTERSECT)
                     paintOne.color = mLineColor
-                    paintOne.isAntiAlias = true
+
 //                    Log.i(TAG2, "onDraw: 绘制分割线$op2")
                     if (op2) {
                         val iterator = RegionIterator(region4)
                         val rect = Rect()
                         while (iterator.next(rect)) {
+                            paintOne.isAntiAlias = true
                             canvas?.drawRect(rect, paintOne)
                         }
                     }
@@ -670,9 +684,17 @@ class PercentageView : android.view.View {
             //绘制左边进度文字
             if (showLeftText) {
                 val valueString = if (mLeftTrueString.isNotEmpty()) {
-               if(showLeftBeforeUnit){mCenterTextMany}else{""}  +   mLeftTrueString + this.mProgressUnit
+                    if (showLeftBeforeUnit) {
+                        mCenterTextMany
+                    } else {
+                        ""
+                    } + mLeftTrueString + this.mProgressUnit
                 } else {
-                    if(showLeftBeforeUnit){mCenterTextMany}else{""} +      "${this.mLeftValue}$mProgressUnit"
+                    if (showLeftBeforeUnit) {
+                        mCenterTextMany
+                    } else {
+                        ""
+                    } + "${NumberUtils.setFloatTo45(this.mLeftValue,2)}$mProgressUnit"
                 }
                 val fontMetrics = it.fontMetrics   //文字高度相关的信息都存在FontMetrics对象中
                 val y: Float =
@@ -687,15 +709,24 @@ class PercentageView : android.view.View {
             //绘制右边文字
             if (showRightText) {
                 val valueString = if (mRightTrueString.isNotEmpty()) {
-                    if(showRightBeforeUnit){mCenterTextFew}else{""} +  mRightTrueString + mProgressUnit
+                    if (showRightBeforeUnit) {
+                        mCenterTextFew
+                    } else {
+                        ""
+                    } + mRightTrueString + mProgressUnit
                 } else {
-                    if(showRightBeforeUnit){mCenterTextFew}else{""} +  "$mRightValue$mProgressUnit"
+                    if (showRightBeforeUnit) {
+                        mCenterTextFew
+                    } else {
+                        ""
+                    } + "${NumberUtils.setFloatTo45(mRightValue,2)}$mProgressUnit"
                 }
                 val stringWidth = it.measureText(valueString)
                 val x = (width - stringWidth - mPadding)
                 val fontMetrics = it.fontMetrics
                 it.color = mTextRightColor
-                val y: Float = (height) / 2 + (abs(fontMetrics.ascent) - fontMetrics.descent) / 2 //|ascent|=descent+ 2 * ( 2号线和3号线之间的距离 )
+                val y: Float =
+                    (height) / 2 + (abs(fontMetrics.ascent) - fontMetrics.descent) / 2 //|ascent|=descent+ 2 * ( 2号线和3号线之间的距离 )
                 canvas?.drawText(valueString, x, y, it)
             }
         }
@@ -704,9 +735,9 @@ class PercentageView : android.view.View {
     //5：绘制中间圆形背景
     private fun drawCenterBg(canvas: Canvas?) {
         Log.i(TAG, "drawCenterBg: 画背景")
-        val bgColor = if (mLeftValue == 50f){
+        val bgColor = if (mLeftValue == 50f) {
             mCenterValuesameBgColor
-        }else{
+        } else {
             mCricularBgColor
         }
         PaintFactory.createPaint(SolidPaint(mPaint, bgColor))?.let {
@@ -715,11 +746,11 @@ class PercentageView : android.view.View {
             //中间圆形背景完全显示
             var centerX = width * mLeftValue / mTotailValue - abs(mTilt) / 2
 
-            if (mCenterBgAllwayShow){
-                if (centerX<radius){
+            if (mCenterBgAllwayShow) {
+                if (centerX < radius) {
                     centerX = radius
-                } else if ((width * mRightValue/mTotailValue)<radius){
-                    centerX = width -radius
+                } else if ((width * mRightValue / mTotailValue) < radius) {
+                    centerX = width - radius
                 }
             }
             canvas?.drawCircle(
@@ -737,17 +768,17 @@ class PercentageView : android.view.View {
         getPaintCenterText()?.let {
             val stringWidth = it.measureText(mCenterText)
 
-            var  centerX=  (width * mLeftValue / mTotailValue) - abs(mTilt) / 2
+            var centerX = (width * mLeftValue / mTotailValue) - abs(mTilt) / 2
             //极限值处理
-            if (mCenterBgAllwayShow){
+            if (mCenterBgAllwayShow) {
                 val radius = getRadius()
-                if (centerX<radius){
+                if (centerX < radius) {
                     centerX = radius
-                } else if ((width * mRightValue/mTotailValue)<radius){
-                    centerX = width -radius
+                } else if ((width * mRightValue / mTotailValue) < radius) {
+                    centerX = width - radius
                 }
             }
-            val x =centerX - stringWidth / 2
+            val x = centerX - stringWidth / 2
             val fontMetrics = it.fontMetrics
             val y: Float =
                 (height) / 2 + (abs(fontMetrics.ascent) - fontMetrics.descent) / 2 //|ascent|=descent+ 2 * ( 2号线和3号线之间的距离 )
@@ -863,7 +894,7 @@ class PercentageView : android.view.View {
         if (mLeftValue > mTotailValue / 2) {
             if ((width - width * (mLeftValue / mTotailValue)) <= minProgressValue) {
                 showRightText = false
-                mLeftTrueString = "$mLeftValue"
+                mLeftTrueString = "${NumberUtils.setFloatTo45(this.mLeftValue,2)}"
                 mLeftValue = (width - rightReduce) / width * mTotailValue
                 mRightValue = mTotailValue - mLeftValue
                 showRightText = false
@@ -874,7 +905,7 @@ class PercentageView : android.view.View {
         //左极限
         else {
             if (width * (mLeftValue / mTotailValue) <= minProgressValue) {
-                mRightTrueString = "$mRightValue"
+                mRightTrueString = "${NumberUtils.setFloatTo45(mRightValue,2)}"
                 mLeftValue = (minProgressValue / width) * mTotailValue
                 mRightValue = mTotailValue - mLeftValue
                 showLeftText = false
@@ -1015,14 +1046,10 @@ class PercentageView : android.view.View {
 
     //设置数据
     fun setData(many: Float, toTail: Float) {
-        val ddf1: NumberFormat = NumberFormat.getNumberInstance()
-        ddf1.maximumFractionDigits = 2
-        val s: String = ddf1.format(many)
-        mLeftValue = s.toFloat()
 
-        mTotailValue = ddf1.format(toTail).toFloat()
-
-        mRightValue =  ddf1.format(mTotailValue - mLeftValue).toFloat()
+        mTotailValue = toTail
+        mLeftValue = many
+        mRightValue = toTail - mLeftValue
 
 
         if (toTail <= 1) {
