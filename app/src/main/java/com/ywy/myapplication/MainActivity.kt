@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
          * 0:纯净模式
          */
         //1:有进度值，加个属性动画，从0开始不好看
-        mPercentageView0.setType(PercentageView.Type.PURE)
+        mPercentageView0.setType(PercentageView.PVType.PURE)
 
         val ofFloat0 = ValueAnimator.ofFloat(10f, 75f)
         ofFloat0.duration = 3000
@@ -28,15 +28,15 @@ class MainActivity : AppCompatActivity() {
         }
         ofFloat0.start()
         //2：无进度值
-        mPercentageView01.setType(PercentageView.Type.PURE)
+        mPercentageView01.setType(PercentageView.PVType.PURE)
         mPercentageView01.setData(36f,100f)
 
         //3：极限值  左边
-        mPercentageView02.setType(PercentageView.Type.PURE)
+        mPercentageView02.setType(PercentageView.PVType.PURE)
         mPercentageView02.setData(3f,100f)
 
         //4：极限值 右边
-        mPercentageView03.setType(PercentageView.Type.PURE)
+        mPercentageView03.setType(PercentageView.PVType.PURE)
         mPercentageView03.setData(98.5f,100f)
 
         /**

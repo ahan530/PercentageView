@@ -8,6 +8,7 @@ import android.graphics.Path
  *Description: 多边形路径
  */
 class RectanglePath : BasePath {
+
     constructor(list1: Array<PoinEntity>){
         path = Path()
         list = list1
