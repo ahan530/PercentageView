@@ -175,9 +175,9 @@ class PercentageView : android.view.View {
     //一：初始化
     private fun initData(context: Context?, attrs: AttributeSet?) {
 
-        context?.let {context->
+        context?.let {mContext->
             attrs?.let {
-                val obt = context.obtainStyledAttributes(attrs, R.styleable.PercentageView).also {
+                val obt = mContext.obtainStyledAttributes(attrs, R.styleable.PercentageView).also {
                     mMinHeight= it.getDimension(R.styleable.PercentageView_ProgressMinHeight, mMinHeight)
                     mTopBottomPadding =   it.getDimension(R.styleable.PercentageView_TopBottomPadding, mTopBottomPadding)
                     mMinWidth =  it.getDimension(R.styleable.PercentageView_ProgressMinWidth, mMinWidth)
@@ -211,11 +211,11 @@ class PercentageView : android.view.View {
                     mLeftValue = obt.getFloat(R.styleable.PercentageView_LeftProgress, 0.00f)
                     mTotailValue = 100f - mLeftValue
                 }
+
                 obt.getString(R.styleable.PercentageView_CenterTextMany)
                     ?.let {
                         mCenterTextMany = it
                     }
-
                 obt.getString(R.styleable.PercentageView_CenterTextFew)
                     ?.let {
                         mCenterTextFew = it
@@ -224,7 +224,6 @@ class PercentageView : android.view.View {
                     ?.let {
                         mCenterText = it
                     }
-
                 obt.getString(R.styleable.PercentageView_ProgressUnit)?.let {
                     mProgressUnit = it
                 }
