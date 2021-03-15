@@ -39,6 +39,8 @@
         <attr name="Radius" format="dimension"/>
         <!--显示圆形背景色-->
         <attr name="CricularBgColor" format="color"/>
+        <!--三种色彩进度条的最底层背景-->
+        <attr name="thirdBgColor" format="color"/>
         <!--中间字体大小-->
         <attr name="CenterTextSize" format="dimension"/>
         <!--左边多-->

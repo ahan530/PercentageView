@@ -843,7 +843,6 @@
             app:TopBottomPadding="@dimen/dp_2"
             android:layout_marginBottom="@dimen/dp_20"/>
 
-
         <com.ywy.percentageview.PercentageView
             android:id="@+id/mPercentageViewx"
             android:layout_marginBottom="@dimen/dp_40"
@@ -865,6 +864,26 @@
             app:LeftProgressColor="#fedcdb"
             app:RightProgressColor="#ccf0e2"
             app:CenterTextColorAlways="@color/color_white"
+            android:layout_marginStart="4dp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="11：三种颜色的进度条"
+            android:textColor="@color/color_333333" />
+
+        <com.ywy.percentageview.PercentageView
+            android:id="@+id/mPV11"
+            android:layout_marginBottom="@dimen/dp_40"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="20dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textColor="@color/color_white"
+            android:layout_marginLeft="4dp"
+            app:ProgressRadius="10dp"
+            app:thirdBgColor="@color/color_eeeeee"
             android:layout_marginStart="4dp" />
 
     </LinearLayout>
