@@ -100,7 +100,7 @@
 //    var mRadius: Float = 0f
 //
 //    //中间圆形背景色
-//    var mCricularBgColor = Color.parseColor("#ffffff")
+//    var mCircularBgColor = Color.parseColor("#ffffff")
 //
 //    //中间背景自定义画笔
 //    var mPaintCircularbg: Paint? = null
@@ -188,9 +188,9 @@
 //                mLineColor = lineColor
 //            }
 //
-//              val haveLimiValue = obt?.getBoolean(R.styleable.PercentageView_HaveLimiValue, mHaveLimitValue)
-//            if (haveLimiValue != null) {
-//                mHaveLimitValue = haveLimiValue
+//              val HaveLimitValue = obt?.getBoolean(R.styleable.PercentageView_HaveLimitValue, mHaveLimitValue)
+//            if (HaveLimitValue != null) {
+//                mHaveLimitValue = HaveLimitValue
 //            }
 //
 //            val leftColor = obt?.getColor(R.styleable.PercentageView_textLeftColor, mTextLeftColor)
@@ -219,10 +219,10 @@
 //            if (radius != null) {
 //                mRadius = radius
 //            }
-//            val cricularBgColor =
-//                obt?.getColor(R.styleable.PercentageView_CricularBgColor, mCricularBgColor)
-//            if (cricularBgColor != null) {
-//                mCricularBgColor = cricularBgColor
+//            val CircularBgColor =
+//                obt?.getColor(R.styleable.PercentageView_CircularBgColor, mCircularBgColor)
+//            if (CircularBgColor != null) {
+//                mCircularBgColor = CircularBgColor
 //            }
 //
 //            val leftValue = obt?.getFloat(R.styleable.PercentageView_LeftProgress, 0.00f)
@@ -831,7 +831,7 @@
 //            mPaint?.reset()
 //            mPaint?.style = Paint.Style.FILL //画笔样式
 //            mPaint?.isAntiAlias = true //抗锯齿
-//            mPaint?.color = mCricularBgColor //画笔颜色
+//            mPaint?.color = mCircularBgColor //画笔颜色
 //            mPaint
 //        }
 //    }

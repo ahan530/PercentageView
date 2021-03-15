@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
 
         //4.1:左极值
         mPercentageView41.setData(0f, 100f)
-        //4.2：左极值（是否有极值-true）HaveLimiValue = true 则百分比进度值显示区域不够 自动隐藏
+        //4.2：左极值（是否有极值-true）HaveLimitValue = true 则百分比进度值显示区域不够 自动隐藏
         mPercentageView42.setData(0f, 100f)
 
 
@@ -165,9 +165,9 @@ class MainActivity : AppCompatActivity() {
         val dealFloatPercentageNumber = 100f
         mPercentageViewx.setData(dealFloatPercentageNumber, 100f)
         if (dealFloatPercentageNumber in 50.0..100.0) {
-            mPercentageViewx.mCricularBgColor = ContextCompat.getColor(this, R.color.color_f75251)
+            mPercentageViewx.mCircularBgColor = ContextCompat.getColor(this, R.color.color_f75251)
         } else {
-            mPercentageViewx.mCricularBgColor = ContextCompat.getColor(this, R.color.color_02b36c)
+            mPercentageViewx.mCircularBgColor = ContextCompat.getColor(this, R.color.color_02b36c)
         }
 
         //11:三种色彩的进度条

@@ -56,7 +56,7 @@ object PercentageViewBuilder {
     var mRadius = 0f
 
     //中间圆形背景色
-    var mCricularBgColor = Color.parseColor("#ffffff")
+    var mCircularBgColor = Color.parseColor("#ffffff")
 
     /**
      * 文字属性

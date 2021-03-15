@@ -38,7 +38,7 @@
         <!--显示圆形半径-->
         <attr name="Radius" format="dimension"/>
         <!--显示圆形背景色-->
-        <attr name="CricularBgColor" format="color"/>
+        <attr name="CircularBgColor" format="color"/>
         <!--三种色彩进度条的最底层背景-->
         <attr name="thirdBgColor" format="color"/>
         <!--中间字体大小-->
@@ -56,9 +56,9 @@
         <!--中间字体颜色-左右值相等-->
         <attr name="CenterTextColor" format="color"/>
         <!--中间背景颜色-左右值相等-->
-        <attr name="CenterValuesameBgColor" format="color"/>
+        <attr name="CenterValueSameBgColor" format="color"/>
        <!--中间背景是否一直完全显示-->
-        <attr name="CenterBgAllwaysShow" format="boolean"/>
+        <attr name="CenterBgAlwaysShow" format="boolean"/>
         <!--忽略值变化的中间字体颜色-->
         <attr name="CenterTextColorAlways" format="color"/>
         <!--中间圆圈颜色背景-->
@@ -70,7 +70,7 @@
         <!--中间分割线颜色-->
         <attr name="CenterLineColor" format="color"/>
         <!--是否有极限值-->
-        <attr name="HaveLimiValue" format="boolean"/>
+        <attr name="HaveLimitValue" format="boolean"/>
 
     </declare-styleable>
 

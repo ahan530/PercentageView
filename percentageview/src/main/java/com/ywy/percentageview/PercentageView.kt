@@ -109,7 +109,7 @@ class PercentageView : android.view.View {
     var mRadius = 0f
 
     //中间圆形背景色
-    var mCricularBgColor = Color.parseColor("#ffffff")
+    var mCircularBgColor = Color.parseColor("#ffffff")
 
     //中间分隔符的倾斜度-90~90 默认60f,对于模式三来说倾斜度只改变方向
     var mTilt = 60f
@@ -190,13 +190,13 @@ class PercentageView : android.view.View {
                     mCenterTextManyColor =   it.getColor(R.styleable.PercentageView_CenterTextColorMany, mCenterTextManyColor)
                     mCenterTextFewColor = it.getColor(R.styleable.PercentageView_CenterTextColorFew, mCenterTextFewColor)
                     mCenterTextColor = it.getColor(R.styleable.PercentageView_CenterTextColor, mCenterTextColor)
-                    mCenterValuesameBgColor =   it.getColor(R.styleable.PercentageView_CenterValuesameBgColor, mCenterValuesameBgColor)
-                    mCenterBgAllwayShow = it.getBoolean(R.styleable.PercentageView_CenterBgAllwaysShow, mCenterBgAllwayShow)
+                    mCenterValuesameBgColor =   it.getColor(R.styleable.PercentageView_CenterValueSameBgColor, mCenterValuesameBgColor)
+                    mCenterBgAllwayShow = it.getBoolean(R.styleable.PercentageView_CenterBgAlwaysShow, mCenterBgAllwayShow)
                     mCenterTextColorAlways =  it.getColor(R.styleable.PercentageView_CenterTextColorAlways, mCenterTextColorAlways)
                     mLeftColor =  it.getColor(R.styleable.PercentageView_LeftProgressColor, mLeftColor)
                     mRightColor =   it.getColor(R.styleable.PercentageView_RightProgressColor, mRightColor)
                     mLineColor =   it.getColor(R.styleable.PercentageView_CenterLineColor, mLineColor)
-                    mHaveLimitValue =   it.getBoolean(R.styleable.PercentageView_HaveLimiValue, mHaveLimitValue)
+                    mHaveLimitValue =   it.getBoolean(R.styleable.PercentageView_HaveLimitValue, mHaveLimitValue)
                     mTextLeftColor =  it.getColor(R.styleable.PercentageView_textLeftColor, this.mTextLeftColor)
                     mTextRightColor =  it.getColor(R.styleable.PercentageView_textRightColor, mTextRightColor)
                     mValueTextSize = it.getDimension(R.styleable.PercentageView_android_textSize, mValueTextSize)
@@ -204,7 +204,7 @@ class PercentageView : android.view.View {
                     showLeftBeforeUnit = it.getBoolean(R.styleable.PercentageView_ShowLeftBeforeUnit, showLeftBeforeUnit)
                     showRightBeforeUnit =it.getBoolean(R.styleable.PercentageView_ShowRightBeforeUnit, showRightBeforeUnit)
                     mRadius =   it.getDimension(R.styleable.PercentageView_Radius, mRadius)
-                    mCricularBgColor =  it.getColor(R.styleable.PercentageView_CricularBgColor, mCricularBgColor)
+                    mCircularBgColor =  it.getColor(R.styleable.PercentageView_CircularBgColor, mCircularBgColor)
                     mThirdBgColor =  it.getColor(R.styleable.PercentageView_thirdBgColor, mThirdBgColor)
                     mRightValue =    it.getFloat(R.styleable.PercentageView_RightProgress, 0.00f)
                     mPadding =  it.getDimension(R.styleable.PercentageView_textPadding, mPadding)
@@ -752,7 +752,7 @@ class PercentageView : android.view.View {
         val bgColor = if (mLeftValue == 50f) {
             mCenterValuesameBgColor
         } else {
-            mCricularBgColor
+            mCircularBgColor
         }
         PaintFactory.createPaint(
             SolidPaint(
@@ -1236,7 +1236,7 @@ class PercentageView : android.view.View {
         this.mCenterTextFew = build.mCenterTextFew
         this.mCenterText = build.mCenterText
         this.mRadius = build.mRadius
-        this.mCricularBgColor = build.mCricularBgColor
+        this.mCircularBgColor = build.mCircularBgColor
         this.mTilt = build.mTilt
         this.mLineSize = build.mLineSize
         this.mLineColor = build.mLineColor
