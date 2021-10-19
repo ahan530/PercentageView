@@ -1,6 +1,7 @@
 package com.ywy.myapplication
 
 import android.animation.ValueAnimator
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
@@ -17,6 +18,9 @@ class MainActivity : AppCompatActivity() {
          */
         //1:有进度值，加个属性动画，从0开始不好看
         mPercentageView0.setType(PercentageView.PVType.PURE)
+        mPercentageView0.setOnClickListener {
+            startActivity(Intent(this,CardActivity::class.java))
+        }
 
         val ofFloat0 = ValueAnimator.ofFloat(10f, 75f)
         ofFloat0.duration = 3000
@@ -62,7 +66,6 @@ class MainActivity : AppCompatActivity() {
 
         //1.1：极限值
         mPercentageView11.setData(3f, 100f)
-
         //2:圆角无切割线
         mPercentageView2.setData(66.44f, 100f)
         //2.1:圆角无切线极限值
@@ -173,5 +176,11 @@ class MainActivity : AppCompatActivity() {
         //11:三种色彩的进度条
         mPV11.setData(1f,1f,100f)
         mPV11.setType(PercentageView.PVType.THIRD)
+
+        mSdkPercentageView.setType(PercentageView.PVType.NO_CENTER)
+        mSdkPercentageView.setData(100f,100f)
+
+        mSdkPercentageView2.setType(PercentageView.PVType.NO_CENTER)
+        mSdkPercentageView2.setData(0f,100f)
     }
 }

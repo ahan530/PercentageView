@@ -1,5 +1,6 @@
 package com.ywy.myapplication
 
+import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
@@ -20,5 +21,11 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.ywy.myapplication", appContext.packageName)
+    }
+
+    @Test
+    fun  a (){
+        val l = 1623834595021L / 120000
+        Log.e("--","$l")
     }
 }

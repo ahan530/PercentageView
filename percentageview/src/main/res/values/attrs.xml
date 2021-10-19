@@ -59,6 +59,8 @@
         <attr name="CenterValueSameBgColor" format="color"/>
        <!--中间背景是否一直完全显示-->
         <attr name="CenterBgAlwaysShow" format="boolean"/>
+        <!--NoCenter模式左右值相等是否显示中间-->
+        <attr name="CenterSameShowText" format="boolean"/>
         <!--忽略值变化的中间字体颜色-->
         <attr name="CenterTextColorAlways" format="color"/>
         <!--中间圆圈颜色背景-->
