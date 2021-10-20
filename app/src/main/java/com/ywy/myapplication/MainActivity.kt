@@ -183,4 +183,8 @@ class MainActivity : AppCompatActivity() {
         mSdkPercentageView2.setType(PercentageView.PVType.NO_CENTER)
         mSdkPercentageView2.setData(0f,100f)
     }
+
+    fun onClick(view: android.view.View) {
+        startActivity(Intent(this@MainActivity,ListActivity::class.java))
+    }
 }
