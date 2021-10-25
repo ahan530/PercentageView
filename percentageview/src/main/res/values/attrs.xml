@@ -37,8 +37,15 @@
         <attr name="ShowRightBeforeUnit" format="boolean"/>
         <!--显示圆形半径-->
         <attr name="Radius" format="dimension"/>
+        <!--显示中间圆形内半径-->
+        <attr name="PVInnerRadius" format="dimension"/>
+        <attr name="PVInnerRadius2" format="dimension"/>
         <!--显示圆形背景色-->
         <attr name="CircularBgColor" format="color"/>
+        <!--显示圆形内圆背景色-->
+        <attr name="PVInnerCircularBgColor" format="color"/>
+        <!--显示圆形内圆背景色-->
+        <attr name="PVInnerCircularBgColor2" format="color"/>
         <!--三种色彩进度条的最底层背景-->
         <attr name="thirdBgColor" format="color"/>
         <!--中间字体大小-->
@@ -73,6 +80,8 @@
         <attr name="CenterLineColor" format="color"/>
         <!--是否有极限值-->
         <attr name="HaveLimitValue" format="boolean"/>
+       <!--是否显示中间文字-->
+        <attr name="PVShowCenterText" format="boolean"/>
 
     </declare-styleable>
 

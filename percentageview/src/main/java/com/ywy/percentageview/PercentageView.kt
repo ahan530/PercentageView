@@ -62,7 +62,7 @@ class PercentageView : android.view.View {
     var mLeftValue = 0f
 
     //总值
-    var mTotailValue = 100.0f
+    var mTotalValue = 100.0f
 
     //左边进度条颜色 默认蓝色
     var mLeftColor = Color.parseColor("#5498f0")
@@ -109,11 +109,22 @@ class PercentageView : android.view.View {
     //模式NoCenter中起作用，左右相等时 是否绘制中间文字
     var drawCenterTextIfSame = false
 
+    //是否显示中间文字
+    var showCenterText = true
+
     //中间圆形半径  默认不显示 如果是0则不显示
     var mRadius = 0f
 
+    //中间圆形内半径  默认不显示 如果是-1则不显示
+    var mInnerRadius = -1f
+    var mInnerRadius2 = -1f
+
     //中间圆形背景色
     var mCircularBgColor = Color.parseColor("#ffffff")
+
+    //中间圆形背景色-内圆
+    var mInnerCircularBgColor = Color.parseColor("#44ffffff")
+    var mInnerCircularBgColor2 = Color.parseColor("#88ffffff")
 
     //中间分隔符的倾斜度-90~90 默认60f,对于模式三来说倾斜度只改变方向
     var mTilt = 60f  //分割线（平行四边形）的对角的垂直距离 这里最好获取的是DB为单位
@@ -167,7 +178,7 @@ class PercentageView : android.view.View {
     var mCenterTextColor = Color.parseColor("#fd7f3e")
 
     //如果是平则中间颜色为 默认蓝色
-    var mCenterValuesameBgColor = Color.parseColor("#3b8ced")
+    var mCenterValueSameBgColor = Color.parseColor("#3b8ced")
 
     //中间文字背景是否一直完全显示
     var mCenterBgAllWaysShow = false
@@ -207,9 +218,9 @@ class PercentageView : android.view.View {
                     )
                     mCenterTextColor =
                         it.getColor(R.styleable.PercentageView_CenterTextColor, mCenterTextColor)
-                    mCenterValuesameBgColor = it.getColor(
+                    mCenterValueSameBgColor = it.getColor(
                         R.styleable.PercentageView_CenterValueSameBgColor,
-                        mCenterValuesameBgColor
+                        mCenterValueSameBgColor
                     )
                     mCenterBgAllWaysShow = it.getBoolean(
                         R.styleable.PercentageView_CenterBgAlwaysShow,
@@ -224,8 +235,8 @@ class PercentageView : android.view.View {
                     mRightColor =
                         it.getColor(R.styleable.PercentageView_RightProgressColor, mRightColor)
                     mLineColor = it.getColor(R.styleable.PercentageView_CenterLineColor, mLineColor)
-                    mHaveLimitValue =
-                        it.getBoolean(R.styleable.PercentageView_HaveLimitValue, mHaveLimitValue)
+                    mHaveLimitValue = it.getBoolean(R.styleable.PercentageView_HaveLimitValue, mHaveLimitValue)
+                    showCenterText = it.getBoolean(R.styleable.PercentageView_PVShowCenterText, showCenterText)
                     mTextLeftColor =
                         it.getColor(R.styleable.PercentageView_textLeftColor, this.mTextLeftColor)
                     mTextRightColor =
@@ -249,10 +260,13 @@ class PercentageView : android.view.View {
                         drawCenterTextIfSame
                     )
                     mRadius = it.getDimension(R.styleable.PercentageView_Radius, mRadius)
-                    mCircularBgColor =
-                        it.getColor(R.styleable.PercentageView_CircularBgColor, mCircularBgColor)
-                    mThirdBgColor =
-                        it.getColor(R.styleable.PercentageView_thirdBgColor, mThirdBgColor)
+                    mInnerRadius = it.getDimension(R.styleable.PercentageView_PVInnerRadius, mInnerRadius)
+                    mInnerRadius2 = it.getDimension(R.styleable.PercentageView_PVInnerRadius2, mInnerRadius2)
+                    mCircularBgColor = it.getColor(R.styleable.PercentageView_CircularBgColor, mCircularBgColor)
+                    mInnerCircularBgColor = it.getColor(R.styleable.PercentageView_PVInnerCircularBgColor, mInnerCircularBgColor)
+                    mInnerCircularBgColor2 = it.getColor(R.styleable.PercentageView_PVInnerCircularBgColor2, mInnerCircularBgColor2)
+
+                    mThirdBgColor = it.getColor(R.styleable.PercentageView_thirdBgColor, mThirdBgColor)
                     mRightValue = it.getFloat(R.styleable.PercentageView_RightProgress, 0.00f)
                     mPadding = it.getDimension(R.styleable.PercentageView_textPadding, mPadding)
                     mCenterTextSize =
@@ -261,7 +275,7 @@ class PercentageView : android.view.View {
 
                 if (mLeftValue > 0f && mLeftValue <= 100f) {
                     mLeftValue = obt.getFloat(R.styleable.PercentageView_LeftProgress, 0.00f)
-                    mTotailValue = 100f - mLeftValue
+                    mTotalValue = 100f - mLeftValue
                 }
 
                 obt.getString(R.styleable.PercentageView_CenterTextMany)
@@ -405,6 +419,7 @@ class PercentageView : android.view.View {
                         /**
                          * step6:绘制圆上的字
                          */
+                      if (showCenterText)
                         drawCenterText(canvas)
                     }
                 }
@@ -417,9 +432,9 @@ class PercentageView : android.view.View {
         if (mProgressRadius > 0 && !mHaveLimitValue) { //无极限值 越界情况
             if (mCenterBgAllWaysShow) return true //如果是需要展示则直接返回ture
 
-            if ((mLeftValue / mTotailValue) * width < mRadius) {
+            if ((mLeftValue / mTotalValue) * width < mRadius) {
                 return false
-            } else if ((mLeftValue / mTotailValue) * width > (width - mRadius)) {
+            } else if ((mLeftValue / mTotalValue) * width > (width - mRadius)) {
                 return false
             }
         }
@@ -457,9 +472,9 @@ class PercentageView : android.view.View {
         val pathTwo = PathFactory.createPath(
             RectanglePath(
                 RectF(
-                    -width * (mTotailValue - mLeftValue / mTotailValue),
+                    -width * (mTotalValue - mLeftValue / mTotalValue),
                     0f,
-                    width * (mLeftValue / mTotailValue),
+                    width * (mLeftValue / mTotalValue),
                     height.toFloat()
                 ),
                 Path(),
@@ -526,7 +541,7 @@ class PercentageView : android.view.View {
                 RectF(
                     0f,
                     0f,
-                    width * ((mRightValue + mLeftValue) / mTotailValue),
+                    width * ((mRightValue + mLeftValue) / mTotalValue),
                     height.toFloat()
                 ),
                 Path(),
@@ -565,7 +580,7 @@ class PercentageView : android.view.View {
                 RectF(
                     0f,
                     0f,
-                    width * (mLeftValue / mTotailValue),
+                    width * (mLeftValue / mTotalValue),
                     height.toFloat()
                 ),
                 Path(),
@@ -799,36 +814,79 @@ class PercentageView : android.view.View {
 
     //6：绘制中间圆形背景
     private fun drawCenterBg(canvas: Canvas?) {
-        Log.i(TAG, "drawCenterBg: 画背景")
-        val bgColor = if (mLeftValue == 50f) {
-            mCenterValuesameBgColor
-        } else {
-            mCircularBgColor
-        }
+
+        //普通模式下中间背景颜色
+        val bgColor = if (mLeftValue == 50f) mCenterValueSameBgColor else mCircularBgColor
+
+
         PaintFactory.createPaint(
             SolidPaint(
                 mPaint,
                 bgColor
             )
         )?.let {
-            val radius = getRadius()
-
             //中间圆形背景完全显示
-            var centerX = width * mLeftValue / mTotailValue - abs(mTilt) / 2
+            var centerX = width * mLeftValue / mTotalValue - abs(mTilt) / 2
 
-            if (mCenterBgAllWaysShow) {
-                if (centerX < radius) {
-                    centerX = radius
-                } else if ((width * mRightValue / mTotailValue) < radius) {
-                    centerX = width - radius
+            //1：绘制通用中间背景
+            if (mInnerRadius==-1f){
+                val radius = getRadius()
+
+                //完全显示
+                if (mCenterBgAllWaysShow) {
+                    if (centerX < radius) {
+                        centerX = radius
+                    } else if ((width * mRightValue / mTotalValue) < radius) {
+                        centerX = width - radius
+                    }
+                }
+
+                //绘制圆
+                canvas?.drawCircle(
+                    centerX,
+                    height / 2.toFloat(),
+                    radius,
+                    it
+                )
+
+            }
+            //2:绘制有透明度的中间背景-1：半径不限制，2：不限制中间圆形背景的极限值
+            else{
+                //绘制外圆
+                it.color = mCircularBgColor
+                canvas?.drawCircle(
+                    centerX,
+                    height / 2.toFloat(),
+                    mRadius,
+                    it
+                )
+
+                //绘制内圆
+                it.color = mInnerCircularBgColor
+                canvas?.drawCircle(
+                    centerX,
+                    height / 2.toFloat(),
+                    mInnerRadius,
+                    it
+                )
+
+                //绘制内圆2
+                if (mInnerRadius!=-1f){
+                    it.color = mInnerCircularBgColor2
+                    canvas?.drawCircle(
+                        centerX,
+                        height / 2.toFloat(),
+                        mInnerRadius2,
+                        it
+                    )
+                }else{
+                    Log.e(TAG,"No more centerBg.")
                 }
             }
-            canvas?.drawCircle(
-                centerX,
-                height / 2.toFloat(),
-                radius,
-                it
-            )
+
+
+
+
         }
     }
 
@@ -838,13 +896,13 @@ class PercentageView : android.view.View {
         getPaintCenterText()?.let {
             val stringWidth = it.measureText(mCenterText)
 
-            var centerX = (width * mLeftValue / mTotailValue) - abs(mTilt) / 2
+            var centerX = (width * mLeftValue / mTotalValue) - abs(mTilt) / 2
             //极限值处理
             if (mCenterBgAllWaysShow) {
                 val radius = getRadius()
                 if (centerX < radius) {
                     centerX = radius
-                } else if ((width * mRightValue / mTotailValue) < radius) {
+                } else if ((width * mRightValue / mTotalValue) < radius) {
                     centerX = width - radius
                 }
             }
@@ -901,7 +959,7 @@ class PercentageView : android.view.View {
 
             //需要绘制的文字长度
             val stringWidth = it.measureText(mCenterText)
-            val distance = (width * mLeftValue / mTotailValue)
+            val distance = (width * mLeftValue / mTotalValue)
             when {
                 mLeftValue > mRightValue -> {
                     centerBeginXText = distance - stringWidth - abs(mTilt) -mLineSize/2
@@ -1029,9 +1087,9 @@ class PercentageView : android.view.View {
         return if (mTilt > 0) {
             val arrayOf1 = arrayOf(
                 PointEntity(0f, 0f),
-                PointEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2, 0f),
+                PointEntity(width * (mLeftValue / mTotalValue) - mLineSize / 2, 0f),
                 PointEntity(
-                    width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2,
+                    width * (mLeftValue / mTotalValue) - mTilt - mLineSize / 2,
                     height.toFloat()
                 ),
                 PointEntity(0f, height.toFloat())
@@ -1046,8 +1104,8 @@ class PercentageView : android.view.View {
         } else {
             val arrayOf2 = arrayOf(
                 PointEntity(0f, 0f),
-                PointEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt, 0f),
-                PointEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2, height.toFloat()),
+                PointEntity(width * (mLeftValue / mTotalValue) - mLineSize / 2 + mTilt, 0f),
+                PointEntity(width * (mLeftValue / mTotalValue) - mLineSize / 2, height.toFloat()),
                 PointEntity(0f, height.toFloat())
             )
             PathFactory.createPath(
@@ -1064,8 +1122,8 @@ class PercentageView : android.view.View {
         return if (mTilt > 0) {
             val listPoint1 = arrayOf(
                 PointEntity(0f, 0f),
-                PointEntity(width * (mLeftValue / mTotailValue), 0f),
-                PointEntity(width * (mLeftValue / mTotailValue) - mTilt, height.toFloat()),
+                PointEntity(width * (mLeftValue / mTotalValue), 0f),
+                PointEntity(width * (mLeftValue / mTotalValue) - mTilt, height.toFloat()),
                 PointEntity(0f, height.toFloat())
             )
             PathFactory.createPath(
@@ -1076,8 +1134,8 @@ class PercentageView : android.view.View {
         } else {
             val listPoint2 = arrayOf(
                 PointEntity(0f, 0f),
-                PointEntity(width * (mLeftValue / mTotailValue) + mTilt, 0f),
-                PointEntity(width * (mLeftValue / mTotailValue), height.toFloat()),
+                PointEntity(width * (mLeftValue / mTotalValue) + mTilt, 0f),
+                PointEntity(width * (mLeftValue / mTotalValue), height.toFloat()),
                 PointEntity(0f, height.toFloat())
             )
             PathFactory.createPath(
@@ -1101,11 +1159,11 @@ class PercentageView : android.view.View {
             it.typeface = Typeface.DEFAULT_BOLD
             it.isAntiAlias = true
             when {
-                mLeftValue > mTotailValue / 2 -> {
+                mLeftValue > mTotalValue / 2 -> {
                     it.color = mCenterTextManyColor//画笔颜色
                     this.mCenterText = this.mCenterTextMany //中间显示内容
                 }
-                mLeftValue < mTotailValue / 2 -> {
+                mLeftValue < mTotalValue / 2 -> {
                     it.color = mCenterTextFewColor
                     this.mCenterText = mCenterTextFew
                 }
@@ -1151,12 +1209,12 @@ class PercentageView : android.view.View {
         }
 
         //右极限
-        if (mLeftValue > mTotailValue / 2) {
-            if ((width - width * (mLeftValue / mTotailValue)) <= minProgressValue) {
+        if (mLeftValue > mTotalValue / 2) {
+            if ((width - width * (mLeftValue / mTotalValue)) <= minProgressValue) {
                 showRightText = false
                 mLeftTrueString = "${NumberUtils.setFloatTo45(this.mLeftValue, 2)}"
-                mLeftValue = (width - rightReduce) / width * mTotailValue
-                mRightValue = mTotailValue - mLeftValue
+                mLeftValue = (width - rightReduce) / width * mTotalValue
+                mRightValue = mTotalValue - mLeftValue
                 showRightText = false
             } else {
                 showRightText = true
@@ -1164,10 +1222,10 @@ class PercentageView : android.view.View {
         }
         //左极限
         else {
-            if (width * (mLeftValue / mTotailValue) <= minProgressValue) {
+            if (width * (mLeftValue / mTotalValue) <= minProgressValue) {
                 mRightTrueString = "${NumberUtils.setFloatTo45(mRightValue, 2)}"
-                mLeftValue = (minProgressValue / width) * mTotailValue
-                mRightValue = mTotailValue - mLeftValue
+                mLeftValue = (minProgressValue / width) * mTotalValue
+                mRightValue = mTotalValue - mLeftValue
                 showLeftText = false
 //                Log.i(TAG, "resetLeftValue: 重置value值1：$mLeftValue")
             } else {
@@ -1182,9 +1240,9 @@ class PercentageView : android.view.View {
         val pathNew = if (mTilt > 0) {
             val pointList1 = arrayOf(
                 PointEntity(height.toFloat() / 2, 0f),
-                PointEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2, 0f),
+                PointEntity(width * (mLeftValue / mTotalValue) - mLineSize / 2, 0f),
                 PointEntity(
-                    width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2,
+                    width * (mLeftValue / mTotalValue) - mTilt - mLineSize / 2,
                     height.toFloat()
                 ),
                 PointEntity(height.toFloat() / 2, height.toFloat())
@@ -1198,8 +1256,8 @@ class PercentageView : android.view.View {
         } else {
             val pointList2 = arrayOf(
                 PointEntity(height.toFloat() / 2, 0f),
-                PointEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt, 0f),
-                PointEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2, height.toFloat()),
+                PointEntity(width * (mLeftValue / mTotalValue) - mLineSize / 2 + mTilt, 0f),
+                PointEntity(width * (mLeftValue / mTotalValue) - mLineSize / 2, height.toFloat()),
                 PointEntity(height.toFloat() / 2, height.toFloat())
             )
             PathFactory.createPath(
@@ -1230,11 +1288,11 @@ class PercentageView : android.view.View {
         if (mProgressRadius > 0f) {
             val path = if (mTilt > 0) {
                 val listPoint = arrayOf(
-                    PointEntity(width * (mLeftValue / mTotailValue) + mLineSize / 2, 0f),
+                    PointEntity(width * (mLeftValue / mTotalValue) + mLineSize / 2, 0f),
                     PointEntity(width.toFloat() - height / 2, 0f),
                     PointEntity(width.toFloat() - height / 2, height.toFloat()),
                     PointEntity(
-                        width * (mLeftValue / mTotailValue) + mLineSize / 2 - mTilt,
+                        width * (mLeftValue / mTotalValue) + mLineSize / 2 - mTilt,
                         height.toFloat()
                     )
                 )
@@ -1246,11 +1304,11 @@ class PercentageView : android.view.View {
                 )
             } else {
                 val listPoint2 = arrayOf(
-                    PointEntity(width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt, 0f),
+                    PointEntity(width * (mLeftValue / mTotalValue) + mLineSize / 2 + mTilt, 0f),
                     PointEntity(width.toFloat() - height / 2, 0f),
                     PointEntity(width.toFloat() - height / 2, height.toFloat()),
                     PointEntity(
-                        width * (mLeftValue / mTotailValue) + mLineSize / 2,
+                        width * (mLeftValue / mTotalValue) + mLineSize / 2,
                         height.toFloat()
                     )
                 )
@@ -1280,11 +1338,11 @@ class PercentageView : android.view.View {
         } else {
             return if (mTilt > 0) {
                 val listPoint1 = arrayOf(
-                    PointEntity(width * (mLeftValue / mTotailValue) + mLineSize / 2, 0f),
+                    PointEntity(width * (mLeftValue / mTotalValue) + mLineSize / 2, 0f),
                     PointEntity(width.toFloat(), 0f),
                     PointEntity(width.toFloat(), height.toFloat()),
                     PointEntity(
-                        width * (mLeftValue / mTotailValue) + mLineSize / 2 - mTilt,
+                        width * (mLeftValue / mTotalValue) + mLineSize / 2 - mTilt,
                         height.toFloat()
                     )
                 )
@@ -1297,11 +1355,11 @@ class PercentageView : android.view.View {
 
             } else {
                 val listPoint2 = arrayOf(
-                    PointEntity(width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt, 0f),
+                    PointEntity(width * (mLeftValue / mTotalValue) + mLineSize / 2 + mTilt, 0f),
                     PointEntity(width.toFloat(), 0f),
                     PointEntity(width.toFloat(), height.toFloat()),
                     PointEntity(
-                        width * (mLeftValue / mTotailValue) + mLineSize / 2,
+                        width * (mLeftValue / mTotalValue) + mLineSize / 2,
                         height.toFloat()
                     )
                 )
@@ -1345,25 +1403,25 @@ class PercentageView : android.view.View {
     //设置数据
     fun setData(many: Float, toTail: Float) {
 
-        mTotailValue = toTail
+        mTotalValue = toTail
         mLeftValue = many
         mRightValue = toTail - mLeftValue
 
 
         if (toTail <= 1) {
             mLeftValue *= 100
-            mTotailValue *= 100
+            mTotalValue *= 100
             mRightValue *= 100
         }
     }
 
     fun setData(left: Float, right: Float, toTail: Float) {
-        mTotailValue = toTail
+        mTotalValue = toTail
         mLeftValue = left
         mRightValue = right
         if (toTail <= 1) {
             mLeftValue *= 100
-            mTotailValue *= 100
+            mTotalValue *= 100
             mRightValue *= 100
         }
     }
@@ -1389,14 +1447,14 @@ class PercentageView : android.view.View {
                 PolygonPath(
                     mPathChart,
                     arrayOf(
-                        PointEntity(width * (mLeftValue / mTotailValue) - mLineSize / 2, 0f),
-                        PointEntity(width * (mLeftValue / mTotailValue) + mLineSize / 2, 0f),
+                        PointEntity(width * (mLeftValue / mTotalValue) - mLineSize / 2, 0f),
+                        PointEntity(width * (mLeftValue / mTotalValue) + mLineSize / 2, 0f),
                         PointEntity(
-                            width * (mLeftValue / mTotailValue) - mTilt + mLineSize / 2,
+                            width * (mLeftValue / mTotalValue) - mTilt + mLineSize / 2,
                             height.toFloat()
                         ),
                         PointEntity(
-                            width * (mLeftValue / mTotailValue) - mTilt - mLineSize / 2,
+                            width * (mLeftValue / mTotalValue) - mTilt - mLineSize / 2,
                             height.toFloat()
                         )
                     )
@@ -1409,19 +1467,19 @@ class PercentageView : android.view.View {
                     mPathChart,
                     arrayOf(
                         PointEntity(
-                            width * (mLeftValue / mTotailValue) - mLineSize / 2 + mTilt,
+                            width * (mLeftValue / mTotalValue) - mLineSize / 2 + mTilt,
                             0f
                         ),
                         PointEntity(
-                            width * (mLeftValue / mTotailValue) + mLineSize / 2 + mTilt,
+                            width * (mLeftValue / mTotalValue) + mLineSize / 2 + mTilt,
                             0f
                         ),
                         PointEntity(
-                            width * (mLeftValue / mTotailValue) + mLineSize / 2,
+                            width * (mLeftValue / mTotalValue) + mLineSize / 2,
                             height.toFloat()
                         ),
                         PointEntity(
-                            width * (mLeftValue / mTotailValue) - mLineSize / 2, height.toFloat()
+                            width * (mLeftValue / mTotalValue) - mLineSize / 2, height.toFloat()
                         )
                     )
                 )
@@ -1438,7 +1496,7 @@ class PercentageView : android.view.View {
         this.mMinWidth = build.mMinWidth
         this.mTextLeftColor = build.mTextLeftColor
         this.mLeftValue = build.mLeftValue
-        this.mTotailValue = build.mTotailValue
+        this.mTotalValue = build.mTotailValue
         this.mLeftColor = build.mLeftColor
         this.mProgressRadius = build.mProgressRadius
         this.mTextRightColor = build.mTextRightColor
