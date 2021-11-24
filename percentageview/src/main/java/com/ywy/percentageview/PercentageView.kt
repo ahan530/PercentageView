@@ -979,7 +979,7 @@ class PercentageView : android.view.View {
                 PaintFactory.createPaint(
                     SolidPaint(
                         mPaint,
-                        Color.parseColor("#44ffffff")
+                        mInnerCircularBgColor
                     )
                 )?.let { mPaint ->
                     canvas.drawCircle(centerX, (height / 2).toFloat(), mRadius, mPaint)
@@ -987,7 +987,7 @@ class PercentageView : android.view.View {
                 PaintFactory.createPaint(
                     SolidPaint(
                         mPaint,
-                        Color.parseColor("#77ffffff")
+                        mInnerCircularBgColor2
                     )
                 )?.let { mPaint ->
                     canvas.drawCircle(centerX, (height / 2).toFloat(), mRadius - 10f, mPaint)

@@ -1,5 +1,6 @@
 package com.ywy.percentageview
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 
@@ -8,6 +9,7 @@ import android.graphics.Color
  * Author:ahan
  * Description: 静态对象构建器
  */
+@SuppressLint("StaticFieldLeak")
 object PercentageViewBuilder {
 
     private var context: Context? = null
