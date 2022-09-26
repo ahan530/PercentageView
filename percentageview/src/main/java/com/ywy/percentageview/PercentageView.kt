@@ -190,6 +190,9 @@ class PercentageView : android.view.View {
     //上下间距
     var mTopBottomPadding = 0f
 
+    //字体样式
+    var mTypeface:Typeface ? =null
+
     //一：初始化
     private fun initData(context: Context?, attrs: AttributeSet?) {
         context?.let { mContext ->
@@ -761,6 +764,9 @@ class PercentageView : android.view.View {
                 mValueTextSize
             )
         )?.let {
+            if(mTypeface!=null){
+                it.typeface = mTypeface
+            }
             //绘制左边进度文字
             if (showLeftText) {
                 val valueString = if (mLeftTrueString.isNotEmpty()) {
@@ -894,6 +900,9 @@ class PercentageView : android.view.View {
     private fun drawCenterText(canvas: Canvas?) {
         //画圆中间的字
         getPaintCenterText()?.let {
+            if(mTypeface!=null){
+                it.typeface = mTypeface
+            }
             val stringWidth = it.measureText(mCenterText)
 
             var centerX = (width * mLeftValue / mTotalValue) - abs(mTilt) / 2
@@ -956,6 +965,9 @@ class PercentageView : android.view.View {
         //画圆中间的字
         getPaintCenterText()?.let {
             it.typeface = Typeface.DEFAULT
+            if(mTypeface!=null){
+                it.typeface = mTypeface
+            }
 
             //需要绘制的文字长度
             val stringWidth = it.measureText(mCenterText)
@@ -1039,6 +1051,9 @@ class PercentageView : android.view.View {
                 mValueTextSize
             )
         )?.let {
+            if(mTypeface!=null){
+                it.typeface = mTypeface
+            }
             //1:绘制左边进度文字
             if (showLeftText) {
                 val leftUnit = if (showLeftBeforeUnit) mCenterTextMany else "" //前单位
@@ -1429,6 +1444,11 @@ class PercentageView : android.view.View {
     //重绘制
     fun invaLidate() {
         postInvalidate()
+    }
+
+    //设置字体样式
+    fun setTypeFace(typeface: Typeface?){
+        mTypeface = typeface
     }
 
 
