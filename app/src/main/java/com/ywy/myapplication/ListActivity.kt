@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.ywy.percentageview.PercentageView
-import kotlinx.android.synthetic.main.activity_list.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * CreateTime:2021-10-20
@@ -28,6 +26,7 @@ class ListActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+       val mRv =  findViewById<RecyclerView>(R.id.mRv)
         mRv.apply {
             adapter =  mAdapter
             layoutManager = LinearLayoutManager(this@ListActivity)
