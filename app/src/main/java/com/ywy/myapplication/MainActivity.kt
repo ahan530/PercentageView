@@ -178,9 +178,7 @@ class MainActivity : AppCompatActivity() {
         mPV11.setType(PercentageView.PVType.THIRD)
 
         mSdkPercentageView.setType(PercentageView.PVType.NO_CENTER)
-        mSdkPercentageView.setData(100f,100f)
-
-
+        mSdkPercentageView.setData(40f,100f)
         mSdkPercentageView2.setData(44f,100f)
     }
 

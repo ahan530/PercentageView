@@ -905,6 +905,8 @@
             app:CenterTextFew="少"
             app:CenterTextMany="多"
             app:LeftProgressColor="#f06"
+            app:PVInnerCircularBgColor="@color/color_qing"
+            app:PVInnerCircularBgColor2="@color/color_red"
             app:RightProgressColor="#ccf0e2"
             app:CenterTextColorMany="#ff0000"
             app:CenterTextColorFew="#333333"
