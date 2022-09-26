@@ -10,7 +10,6 @@
     tools:context=".MainActivity"
     android:scrollbarStyle="outsideInset">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -948,4 +947,5 @@
             android:onClick="onClick"/>
 
     </LinearLayout>
+
 </androidx.core.widget.NestedScrollView>
